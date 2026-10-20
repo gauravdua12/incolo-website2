@@ -31,12 +31,13 @@
 ```bash
 node -v
 ```
-If it's below v20, upgrade first:
+If it shows v20 or newer, skip to 1.2. Otherwise, upgrade from the **NodeSource** repo the server already uses. Don't use Oracle's `dnf module install nodejs:22`: it conflicts with NodeSource's `nsolid` packages, and dnf aborts with "none of the providers can be installed" (nothing gets changed).
 ```bash
-sudo dnf module reset -y nodejs && sudo dnf module install -y nodejs:22
-node -v
+sudo dnf module disable -y nodejs
+sudo dnf install -y nodejs --disablerepo=nodesource-nsolid
+node -v && sudo systemctl restart incolo && curl -sI http://127.0.0.1:3000/ | head -1
 ```
-The current site runs fine on Node 22, so this upgrade is safe to do first.
+Expect `v20…` and `HTTP/1.1 200 OK`. The current site runs fine on Node 20, so this upgrade is safe to do first.
 
 **1.2 Back up everything the new site must inherit.**
 ```bash
