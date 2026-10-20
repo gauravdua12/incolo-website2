@@ -750,7 +750,7 @@ Next.js would only pay off for thousands of server-rendered directory pages (Key
 
 ## 6. Revision 3: data residency, Industry 5.0 tagline, Industry 4.0 standards
 
-*Requested 2026-10-20 after look-and-feel approval. Kept on branch `rev3-data-residency` until signed off.*
+*Requested and approved 2026-10-20; merged into `main`.*
 
 ### 6.1 Showcase panel 1 headline
 - **Kicker:** DATA RESIDENCY
@@ -788,4 +788,4 @@ Next.js would only pay off for thousands of server-rendered directory pages (Key
 - **Footer line:** Industry 4.0 foundations → Industry 5.0 outcomes · connected, secure and human-centric
 - Footer "Company" column gains an **Industry 4.0 standards** link.
 
-> ⚠ **To confirm before going live:** that Incolo actually supports or aligns with each listed standard. Remove any that don't apply. The copy says "designed around", not "certified to".
+> ✓ **Confirmed 2026-10-20:** all eight standards are approved to keep. The copy says "designed around", not "certified to".
