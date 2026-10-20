@@ -91,19 +91,20 @@ kill %1
 
 ## Phase 2: Cut over (about 5 seconds)
 
-**2.1 Point the service at a symlink,** so future switches and rollbacks are a one-liner. This is a one-time change.
+**2.1 Point the service at the new folder.** Use the real folder path, not a symlink. On Oracle Linux, systemd can fail to enter a symlinked home-directory path, and the service then crash-loops with `status=200/CHDIR`.
 ```bash
-ln -sfn /home/opc/incolo-site2 /home/opc/incolo-current
-sudo sed -i 's#^WorkingDirectory=.*#WorkingDirectory=/home/opc/incolo-current#' /etc/systemd/system/incolo.service
+sudo sed -i 's#^WorkingDirectory=.*#WorkingDirectory=/home/opc/incolo-site2#' /etc/systemd/system/incolo.service
 sudo systemctl daemon-reload
 ```
 
 **2.2 Switch.**
 ```bash
 sudo systemctl restart incolo
+sleep 2
 sudo systemctl status incolo --no-pager      # "active (running)"
 journalctl -u incolo -n 20 --no-pager        # "Incolo site listening on http://127.0.0.1:3000"
 ```
+If the status shows `auto-restart` or `status=200/CHDIR`, run the rollback below immediately, then investigate.
 
 **2.3 Verify production.**
 ```bash
@@ -132,8 +133,8 @@ Then send one real enquiry through `https://incolo.si/contact` and confirm the e
 ## Rollback (any time, under a minute)
 
 ```bash
-ln -sfn /home/opc/incolo-site /home/opc/incolo-current
-sudo systemctl restart incolo
+sudo sed -i 's#^WorkingDirectory=.*#WorkingDirectory=/home/opc/incolo-site#' /etc/systemd/system/incolo.service
+sudo systemctl daemon-reload && sudo systemctl restart incolo
 ```
 The old site runs exactly as before. Enquiries made on 2.0 remain in `/home/opc/incolo-data/leads.jsonl`. Note that the old site writes to its own `leads.jsonl`.
 
