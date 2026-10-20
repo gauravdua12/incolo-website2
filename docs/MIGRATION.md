@@ -121,6 +121,7 @@ Then send one real enquiry through `https://incolo.si/contact` and confirm the e
 | Where | What to do |
 |---|---|
 | **Facebook Sharing Debugger** (developers.facebook.com/tools/debug) | Enter `https://incolo.si/` and click **Scrape Again**. This refreshes the preview for Facebook, Messenger and Instagram links. |
+| **"Missing property fb:app_id" warning** | Harmless: previews and verification still work. To clear it, put your Facebook App ID (developers.facebook.com → My Apps) in `data/site.json → facebookAppId`, then rebuild and restart. |
 | **Meta Business Suite → Brand safety → Domains** | Confirm `incolo.si` still shows **Verified**. The tags are unchanged, so it should. |
 | **WhatsApp** | WhatsApp caches previews per URL. To check the new preview immediately, share `https://incolo.si/?v=2` in a chat with yourself. Plain links refresh on their own over time. |
 | **LinkedIn Post Inspector** (linkedin.com/post-inspector) | Inspect `https://incolo.si/` to refresh LinkedIn's cache. |

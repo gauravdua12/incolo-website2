@@ -33,7 +33,7 @@ docs/              BLUEPRINT.md (design + copy), MIGRATION.md (go-live runbook),
 |---|---|
 | Homepage or programs copy | `site/pages/*.html` |
 | Add or edit a program | `data/programs.json` (detail page, directory card and form option update automatically) |
-| Verification tags, OG image, canonical domain | `data/site.json` |
+| Verification tags, OG image, canonical domain, Facebook App ID | `data/site.json` |
 | Header, footer, dialog | `site/partials/*.html` |
 | Colours, type, spacing | `site/styles/tokens.css` |
 

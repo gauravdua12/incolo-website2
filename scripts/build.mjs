@@ -36,6 +36,7 @@ const SITE_URL = (process.env.SITE_URL || CFG.siteUrl).replace(/\/$/, '');
 const LINKEDIN = process.env.LINKEDIN_URL || CFG.linkedin || '';
 const GOOGLE_VERIFY = process.env.GOOGLE_SITE_VERIFICATION || CFG.googleSiteVerification || '';
 const BING_VERIFY = process.env.BING_SITE_VERIFICATION || CFG.bingSiteVerification || '';
+const FB_APP_ID = process.env.FACEBOOK_APP_ID || CFG.facebookAppId || '';
 
 function render(tpl, vars, partials, depth = 0) {
   if (depth > 8) throw new Error('Partial nesting too deep');
@@ -104,7 +105,7 @@ function head({ title, description, ogDescription, canonical, v, noindex, urlPat
   <meta property="og:image:width" content="${CFG.ogImageWidth}" />
   <meta property="og:image:height" content="${CFG.ogImageHeight}" />
   <meta property="og:image:alt" content="${alt}" />
-  <meta name="twitter:card" content="summary_large_image" />
+${FB_APP_ID ? `  <meta property="fb:app_id" content="${esc(FB_APP_ID)}" />\n` : ''}  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${t}" />
   <meta name="twitter:description" content="${od}" />
   <meta name="twitter:image" content="${img}" />
