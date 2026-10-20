@@ -14,7 +14,7 @@ echo "Pages ($BASE)"
 for p in / /programs /contact /solutions/production-systems /solutions/advisory /solutions/process-modernization \
          /programs/visual-inspection /programs/packaging-bin-count /programs/predictive-maintenance \
          /programs/production-planning /programs/shop-floor-monitoring /programs/brazing-furnace-optimization \
-         /programs/circuit-router /sitemap.xml /robots.txt /media/og-image.jpg /favicon.svg /healthz; do
+         /programs/circuit-router /sitemap.xml /robots.txt /favicon.svg /healthz; do
   c=$(code "$BASE$p"); [ "$c" = 200 ] && ok "$p 200" || bad "$p → $c (expected 200)"
 done
 c=$(code "$BASE/this-page-does-not-exist"); [ "$c" = 404 ] && ok "unknown URL → 404" || bad "unknown URL → $c (expected 404)"
@@ -41,9 +41,12 @@ echo "Indexing files"
 curl -s -m 15 "$BASE/robots.txt" | grep -q '^Sitemap: ' && ok 'robots.txt lists the sitemap' || bad 'robots.txt has no Sitemap line'
 n=$(curl -s -m 15 "$BASE/sitemap.xml" | grep -c '<loc>'); [ "$n" -ge 13 ] && ok "sitemap.xml has $n URLs" || bad "sitemap.xml has $n URLs (expected ≥ 13)"
 
-echo "OG image"
-sz=$(curl -s -o /dev/null -m 15 -w '%{size_download}' "$BASE/media/og-image.jpg")
-[ "$sz" -gt 0 ] && [ "$sz" -lt 600000 ] && ok "og-image.jpg ${sz} bytes (< 600 KB for WhatsApp)" || bad "og-image.jpg size ${sz}"
+echo "OG image (the one the homepage advertises)"
+OG=$(printf '%s' "$HOME_HTML" | grep -o 'property="og:image" content="[^"]*"' | head -1 | sed 's/.*content="//; s/"$//')
+OG_PATH="/${OG#*://*/}"   # fetch from $BASE so this also works before DNS/cutover
+read -r oc sz ct < <(curl -s -o /dev/null -m 15 -w '%{http_code} %{size_download} %{content_type}\n' "$BASE$OG_PATH")
+[ "$oc" = 200 ] && ok "$OG_PATH → 200 ($ct)" || bad "$OG_PATH → $oc"
+[ "${sz:-0}" -gt 0 ] && [ "${sz:-0}" -lt 600000 ] && ok "${sz} bytes (< 600 KB for WhatsApp)" || bad "og image size ${sz:-0}"
 
 echo; [ "$fail" = 0 ] && echo "All checks passed." || echo "$fail check(s) failed."
 exit "$fail"

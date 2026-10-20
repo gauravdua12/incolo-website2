@@ -2,8 +2,8 @@
   "siteUrl": "https://incolo.si",
   "name": "Incolo Systems",
   "locale": "en_IN",
-  "ogImage": "/media/og-image.jpg",
-  "ogImageAlt": "Incolo Systems — private, on-edge AI for industrial manufacturing",
+  "ogImage": "/media/og-image-v2.jpg",
+  "ogImageAlt": "Incolo Systems: private AI for the shop floor, on-premise or in your private cloud",
   "ogImageWidth": 1200,
   "ogImageHeight": 630,
   "facebookDomainVerification": [

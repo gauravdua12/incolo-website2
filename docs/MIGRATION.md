@@ -120,7 +120,7 @@ Then send one real enquiry through `https://incolo.si/contact` and confirm the e
 
 | Where | What to do |
 |---|---|
-| **Facebook Sharing Debugger** (developers.facebook.com/tools/debug) | Enter `https://incolo.si/` and click **Scrape Again**. This refreshes the preview for Facebook, Messenger and Instagram links. |
+| **Facebook Sharing Debugger** (developers.facebook.com/tools/debug) | Enter `https://incolo.si/` and click **Scrape Again**. This refreshes the preview for Facebook, Messenger and Instagram links. The card should show the new image (`og-image-v2.jpg`, white with "Private AI for the shop floor"). If it shows the old dark image, the server isn't on the latest build yet. |
 | **"Missing property fb:app_id" warning** | Harmless: previews and verification still work. To clear it, put your Facebook App ID (developers.facebook.com → My Apps) in `data/site.json → facebookAppId`, then rebuild and restart. |
 | **Meta Business Suite → Brand safety → Domains** | Confirm `incolo.si` still shows **Verified**. The tags are unchanged, so it should. |
 | **WhatsApp** | WhatsApp caches previews per URL. To check the new preview immediately, share `https://incolo.si/?v=2` in a chat with yourself. Plain links refresh on their own over time. |
@@ -151,6 +151,8 @@ npm run build              # always: pages are generated from site/ + data/
 sudo systemctl restart incolo
 bash scripts/verify-prod.sh https://incolo.si
 ```
+
+**Changing the preview image:** edit `scripts/og/og-image.html`, run `npm run og` on a Mac, and **give the image a new file name** (`og-image-v3.jpg`, set in `data/site.json → ogImage` and `scripts/og/shot.json`). Facebook and WhatsApp cache images by URL, so reusing a name keeps showing the old picture.
 
 **Never edit HTML on the server.** Production-only changes, like the Facebook tags were, get lost on the next deploy. Make them in the repo instead:
 

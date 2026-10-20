@@ -9,7 +9,8 @@
     "start": "node server.js",
     "dev": "node scripts/dev.mjs",
     "screens": "node scripts/capture-screens.mjs docs/mockups/build scripts/shots/build-pages.json",
-    "verify": "bash scripts/verify-prod.sh"
+    "verify": "bash scripts/verify-prod.sh",
+    "og": "sed \"s#__ROOT__#$PWD#\" scripts/og/shot.json > /tmp/og-shot.json && node scripts/capture-screens.mjs /tmp/og-out /tmp/og-shot.json && sips -s format jpeg -s formatOptions 90 /tmp/og-out/og-image-v2.png --out site/media/og-image-v2.jpg"
   },
   "engines": {
     "node": ">=20"

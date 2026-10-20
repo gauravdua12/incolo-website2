@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- Source for the 1200×630 link-preview image (WhatsApp, Facebook, LinkedIn, X).
+     Render with:  npm run og   → site/media/og-image-v2.jpg
+     When the wording changes, bump the file name (v3, …) in package.json + data/site.json,
+     because Facebook and WhatsApp cache preview images by URL. -->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<style>
+  @font-face { font-family: 'Inter var'; font-weight: 100 900; src: url('../../site/fonts/inter-latin-var.woff2') format('woff2'); }
+  @font-face { font-family: 'Noto Sans Devanagari'; font-weight: 100 900; src: url('../../site/fonts/noto-sans-devanagari-var.woff2') format('woff2');
+               unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+25CC, U+A8E0-A8FF; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative; font-family: 'Inter var', sans-serif; color: #0b2340; -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(46% 70% at 88% 20%, #d7e9ff 0%, rgba(215,233,255,0) 70%),
+      radial-gradient(30% 50% at 70% 100%, #e4f1ff 0%, rgba(228,241,255,0) 70%),
+      #ffffff;
+  }
+  svg.net { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .card { position: absolute; inset: 0; padding: 64px 72px 56px; display: flex; flex-direction: column; }
+  .brand { display: flex; align-items: center; gap: 16px; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; }
+  .brand img { width: 46px; height: auto; }
+  .eyebrow { margin-top: 52px; font-size: 17px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #1d65cc; }
+  .eyebrow b { font-weight: 500; color: #3b82f6; margin: 0 .7em; letter-spacing: 0; }
+  h1 { margin-top: 18px; font-size: 76px; line-height: 80px; font-weight: 400; letter-spacing: -0.035em; }
+  .sub { margin-top: 22px; max-width: 900px; font-size: 28px; line-height: 38px; color: #4f647c; letter-spacing: -0.01em; }
+  .sub strong { color: #0b2340; font-weight: 500; }
+  .foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; }
+  .hi { font-family: 'Noto Sans Devanagari', 'Inter var', sans-serif; font-size: 30px; font-weight: 600; color: #14498f; }
+  .pill { display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 20px; border-radius: 999px; background: #1d65cc; color: #fff; font-size: 20px; font-weight: 500; }
+  .pill i { width: 9px; height: 9px; border-radius: 50%; background: #9cc4ff; }
+  .rule { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: linear-gradient(90deg, #1d65cc, #3b82f6 60%, #8fb8f0); }
+</style>
+</head>
+<body>
+  <svg class="net" id="net" aria-hidden="true"></svg>
+  <div class="card">
+    <div class="brand"><img src="../../site/media/logo-mark.png" alt="" />Incolo Systems</div>
+    <p class="eyebrow">Industry 5.0<b>|</b>Automations &amp; AI solutions for all</p>
+    <h1>Private AI for the shop floor</h1>
+    <p class="sub">Inspection, maintenance, planning and monitoring, <strong>on-premise or in your private cloud.</strong> Data residency is your decision.</p>
+    <div class="foot">
+      <span class="hi" lang="hi">आपका बिजनेस, हमारा साथ, आपका निजी AI।</span>
+      <span class="pill"><i></i>incolo.si</span>
+    </div>
+  </div>
+  <div class="rule"></div>
+  <script>
+    // Same seeded network-line texture as the site hero, kept to the right-hand side.
+    let seed = 11; const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+    const pts = []; for (let i = 0; i < 34; i++) pts.push([560 + rnd() * 660, rnd() * 630]);
+    let d = '';
+    pts.forEach((p, i) => pts.map((q, j) => [j, Math.hypot(p[0] - q[0], p[1] - q[1])]).filter(([j]) => j > i)
+      .sort((a, b) => a[1] - b[1]).slice(0, 2).forEach(([j, dist]) => { if (dist < 220) d += `M${p[0]|0} ${p[1]|0}L${pts[j][0]|0} ${pts[j][1]|0}`; }));
+    document.getElementById('net').innerHTML = `<path d="${d}" stroke="#cfdeee" stroke-width="1.2" fill="none" opacity=".8"/>` +
+      pts.map((p) => `<circle cx="${p[0]|0}" cy="${p[1]|0}" r="2.6" fill="#b9d0ec"/>`).join('');
+  </script>
+</body>
+</html>
