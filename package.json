@@ -1,0 +1,20 @@
+{
+  "name": "incolo-website2",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Incolo Systems website 2.0: static pages built from partials + data, served by Express with a contact API.",
+  "main": "server.js",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node server.js",
+    "dev": "node scripts/dev.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^4.22.3",
+    "nodemailer": "^10.1.7"
+  }
+}

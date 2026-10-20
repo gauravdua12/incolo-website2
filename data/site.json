@@ -1,0 +1,25 @@
+{
+  "siteUrl": "https://incolo.si",
+  "name": "Incolo Systems",
+  "locale": "en_IN",
+  "ogImage": "/media/og-image.jpg",
+  "ogImageAlt": "Incolo Systems — private, on-edge AI for industrial manufacturing",
+  "ogImageWidth": 1200,
+  "ogImageHeight": 630,
+  "facebookDomainVerification": [
+    "u7ly77vfjfrfaieozxr0kae71ck3vm",
+    "50g3uvbtysx4iel2c7149tyax3m6o3"
+  ],
+  "googleSiteVerification": "",
+  "bingSiteVerification": "",
+  "linkedin": "",
+  "organization": {
+    "email": "business@incolosystems.com",
+    "telephone": "+91-99203-23832",
+    "locality": "Faridabad",
+    "region": "Haryana",
+    "country": "IN",
+    "logo": "/media/logo-mark.png",
+    "slogan": "Industry 5.0 | Automations & AI solutions for all"
+  }
+}

@@ -1,0 +1,99 @@
+[
+  {
+    "id": "P-01", "slug": "visual-inspection", "icon": "scan", "pillar": "production-systems",
+    "title": "AI Visual Inspection", "capabilityLabel": "Computer vision",
+    "img": "/media/programs/p01-visual-inspection.jpg",
+    "alt": "AI vision cameras and robotic arms inspecting circuit boards on a production line, with a live inspection dashboard",
+    "chips": ["Pharma", "Automotive", "Discrete"],
+    "desc": "Edge-deployed computer vision trained on line-specific defect libraries (surface, dimensional, print and assembly-completeness), with sub-second inference and a human-in-the-loop review queue.",
+    "outcomes": ["Reduced escaped-defect rate and less end-of-line manual sampling", "Audit-ready defect trail suitable for GMP and OEM reviews"],
+    "connects": [["camera", "Line & IP cameras"], ["server", "Edge gateways"], ["grid", "MES"], ["users", "Review queue for operators"]],
+    "industry": ["pharma", "automotive", "discrete"], "outcome": ["quality", "compliance"], "capability": ["vision"], "data": ["cameras"]
+  },
+  {
+    "id": "P-02", "slug": "packaging-bin-count", "icon": "package", "pillar": "production-systems",
+    "title": "Packaging & Bin-Count Verification", "capabilityLabel": "Computer vision",
+    "img": "/media/programs/p02-packaging-bincount.jpg",
+    "alt": "Live packing dashboard showing units packed this hour against the hourly target with a behind-pace alert",
+    "chips": ["Discrete & Batch", "Pre-Dispatch QC"],
+    "desc": "Vision-based AI counts each piece as it is placed and checks the final count against target before a container is sealed, with an auditable photo record and a logged override for exceptions.",
+    "outcomes": ["Miscounts caught at the packing station in seconds, not at the customer dock", "Photo-backed proof of what shipped, with no added paperwork"],
+    "connects": [["camera", "Packing-station cameras"], ["server", "Edge gateways"], ["database", "ERP / dispatch records"], ["history", "Photo audit log"]],
+    "industry": ["discrete", "batch"], "outcome": ["quality", "compliance"], "capability": ["vision"], "data": ["cameras"]
+  },
+  {
+    "id": "P-03", "slug": "predictive-maintenance", "icon": "wrench", "pillar": "production-systems",
+    "title": "Predictive Maintenance", "capabilityLabel": "Predictive ML",
+    "img": "/media/programs/p03-predictive-maintenance.jpg",
+    "alt": "Maintenance engineer reviewing a predictive-maintenance dashboard on a tablet beside a CNC machine on the plant floor",
+    "chips": ["Rotating Equipment", "Utilities", "Critical Assets"],
+    "desc": "Vibration, temperature, current and pressure data streamed to on-premise ML models trained on asset-specific failure signatures, with remaining-useful-life alerts and CMMS/EAM work-order integration.",
+    "outcomes": ["Fewer unplanned stoppages on critical lines and utilities", "Shift from calendar-based to condition-based maintenance"],
+    "connects": [["radio", "Vibration, temperature, current & pressure sensors"], ["activity", "SCADA / historians"], ["wrench", "CMMS / EAM work orders"], ["server", "Plant server or private cloud"]],
+    "industry": ["utilities"], "outcome": ["uptime"], "capability": ["predictive"], "data": ["sensors"]
+  },
+  {
+    "id": "P-04", "slug": "production-planning", "icon": "calendar", "pillar": "process-modernization",
+    "title": "Production Planning", "capabilityLabel": "Agentic / copilot",
+    "img": "/media/programs/p04-production-planning.jpg",
+    "alt": "Laptop showing an AI production-planning co-pilot generating a monthly production report",
+    "chips": ["Multi-Product", "Batch & Discrete"],
+    "desc": "Agentic re-planning that proposes revised schedules when an order changes. A plain-language interface lets planners request a build plan or dispatch report, checked against the BOM and live stock before anything is committed.",
+    "outcomes": ["Improved on-time delivery against customer commitments", "Minutes, not hours, to turn a request into an approval-ready order"],
+    "connects": [["database", "ERP orders, BOM & live stock"], ["grid", "MES schedules"], ["sparkle", "Plain-language copilot"], ["users", "Planner approval before commit"]],
+    "industry": ["discrete", "batch"], "outcome": ["delivery"], "capability": ["agentic"], "data": ["erp"]
+  },
+  {
+    "id": "P-05", "slug": "shop-floor-monitoring", "icon": "activity", "pillar": "production-systems",
+    "title": "Real-Time Shop-Floor Monitoring", "capabilityLabel": "Agentic / copilot",
+    "img": "/media/programs/p05-shop-floor-monitoring.jpg",
+    "alt": "Wide view of a busy manufacturing shop floor with robotic welding cells, CNC machines and operators",
+    "chips": ["Multi-Line Visibility", "OEE"],
+    "desc": "Real-time OEE, throughput and quality dashboards built on your existing SCADA/MES data and deployed on-premise, with an AI copilot that flags anomalies as they emerge and Andon-style escalation.",
+    "outcomes": ["Slowdowns caught within the hour, not at shift-end", "Single real-time view of OEE across lines and shifts"],
+    "connects": [["activity", "SCADA"], ["grid", "MES"], ["gauge", "OEE dashboards"], ["zap", "Andon-style escalation"]],
+    "industry": [], "outcome": ["oee"], "capability": ["agentic"], "data": ["scada"]
+  },
+  {
+    "id": "P-06", "slug": "brazing-furnace-optimization", "icon": "flame", "pillar": "production-systems",
+    "title": "Brazing Furnace Optimization", "capabilityLabel": "Predictive ML",
+    "img": "/media/programs/p06-brazing-furnace.jpg",
+    "alt": "Brazing furnace thermal-profile dashboard showing setpoint versus actual zone temperatures with an AI zone adjustment",
+    "chips": ["Automotive Thermal", "Heat-Exchangers"],
+    "desc": "ML models trained on furnace zone temperatures, belt speed and atmosphere against downstream leak-test results, recommending parameter adjustments to hold the optimal thermal profile as load and product mix vary.",
+    "outcomes": ["Reduced scrap and rework from weak or over-brazed joints", "Lower energy per unit through tighter thermal-profile control"],
+    "connects": [["thermo", "Furnace zone temperatures"], ["gauge", "Belt speed & atmosphere"], ["check", "Downstream leak-test results"], ["cpu", "Furnace PLC / SCADA"]],
+    "industry": ["automotive", "thermal"], "outcome": ["quality", "energy"], "capability": ["predictive"], "data": ["process", "sensors"]
+  },
+  {
+    "id": "P-07", "slug": "circuit-router", "icon": "route", "pillar": "process-modernization",
+    "title": "Heat-Exchanger Circuit Router", "capabilityLabel": "Design automation",
+    "img": "/media/programs/p07-circuit-router.svg", "svg": true, "isNew": true,
+    "alt": "Refrigerant circuit routing layout generated by the Incolo Circuit Router: circuits drawn as horizontal bands of front and rear bends",
+    "chips": ["Heat-Exchangers", "HVAC & Refrigeration Coils"],
+    "desc": "Generates refrigerant circuit (CKT) routing layouts for fin-and-tube heat exchangers from the coil grid, target circuits, parity, flow direction and dummy holes. It applies the design team's bend, drainage and coverage rules, balances circuit sizes across the face, and exports an SVG/PDF reference with every run saved for audit and reuse.",
+    "outcomes": ["Circuit layouts generated in one step instead of drawn by hand", "Design rules enforced on every layout, with deviations explained", "Every run stored with inputs and output for traceability"],
+    "meta": [["shield", "Runs fully offline on your PC or plant server"], ["check", "Delivered to a heat-exchanger OEM"]],
+    "connects": [["grid", "Coil grid & design inputs"], ["file", "SVG / PDF export"], ["history", "Run history & audit log"], ["users", "Engineer review"]],
+    "detail": {
+      "inputsTitle": "What the engineer enters",
+      "inputs": [
+        ["Vertical holes (rows) & hole columns", "The front-face grid of the coil"],
+        ["Target circuits & minimum holes per circuit", "How many circuits, and the smallest allowed"],
+        ["Parity", "Even, odd or any: even circuits exit on the front face, odd on the rear"],
+        ["Circuit direction", "Incline (upward flow, evaporator and water coils) or decline (downward flow, condensers)"],
+        ["Dummy holes", "Holes excluded from every circuit, marked by clicking the grid"]
+      ],
+      "rulesTitle": "Design rules enforced on every run",
+      "rules": [
+        "Every bend joins a true neighbour on the staggered lattice: no long skip bends, and no bends cross",
+        "Circuits stack as compact horizontal bands that only step in the flow direction, so there are no traps",
+        "A wrong-way move is at most a single half-pitch dip, never in the final two steps",
+        "Circuit sizes are interleaved across the face, not clustered",
+        "If the exact target can't be met, the count is reduced and the deviation is explained",
+        "Isolated holes are offered as suggested dummies, applied in one click"
+      ]
+    },
+    "industry": ["thermal", "hvac"], "outcome": ["design", "compliance"], "capability": ["design"], "data": ["specs"]
+  }
+]

@@ -1,17 +1,44 @@
 # Incolo Systems: website 2.0
 
-Redesign of incolo.si. It uses keychain.com's layout, components and navigation, filled with Incolo's own content and blue brand palette.
+The incolo.si website. It uses keychain.com's layout and component system with Incolo's content and blue palette. Pages are static HTML built from partials and JSON data, served by Express, which also handles the contact form. There are no third-party runtime requests (fonts, icons and scripts are self-hosted), and the only outbound connection is the SMTP relay.
 
-**Status:** Look-and-feel mockup for approval.
-
-- Blueprint (wireframes, colour/UI mapping, full copy): [docs/BLUEPRINT.md](docs/BLUEPRINT.md)
-- Screenshots (desktop 1440px + mobile): [docs/mockups/](docs/mockups/)
-- Live mockup: [public/index.html](public/index.html) (homepage) and [public/programs.html](public/programs.html) (AI Programs directory)
-
-## View locally
+## Run locally
 
 ```bash
-python3 -m http.server 4100 --directory public
+npm install
+npm run dev        # builds, watches, serves http://127.0.0.1:4100
 ```
 
-Then open http://localhost:4100. The scoping-call form doesn't send anything yet. In the build it posts to the Express `/api/contact` endpoint.
+Without `SMTP_HOST` in `.env`, enquiries are saved to `leads.jsonl` but no email is sent.
+
+## Layout
+
+```
+site/pages/        page bodies: index, programs, contact, 404 (first line = JSON front matter)
+site/partials/     header, footer, scoping-call dialog, contact form, final CTA
+site/styles|js|fonts|media/   assets (copied as-is)
+data/site.json     SEO + social settings: canonical URL, OG image, Facebook/Google verification
+data/programs.json the 7 AI programs (directory, detail pages, form options)
+data/pillars.json  the 3 solution pages
+scripts/build.mjs  → dist/ (pages, sitemap.xml, robots.txt; fails if SEO/social tags go missing)
+scripts/templates/ generated pages: /solutions/<slug>, /programs/<slug>
+scripts/verify-prod.sh  read-only smoke test for any running instance
+server.js          Express: clean URLs, security headers, POST /api/contact
+docs/              BLUEPRINT.md (design + copy), MIGRATION.md (go-live runbook), mockups/
+```
+
+## Common edits
+
+| Change | Where |
+|---|---|
+| Homepage or programs copy | `site/pages/*.html` |
+| Add or edit a program | `data/programs.json` (detail page, directory card and form option update automatically) |
+| Verification tags, OG image, canonical domain | `data/site.json` |
+| Header, footer, dialog | `site/partials/*.html` |
+| Colours, type, spacing | `site/styles/tokens.css` |
+
+After any change: `npm run build` (the dev server does this automatically).
+
+## Deploy
+
+See [docs/MIGRATION.md](docs/MIGRATION.md) for the first go-live and for routine updates (`git pull && npm ci --omit=dev && npm run build && sudo systemctl restart incolo`).

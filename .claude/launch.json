@@ -1,11 +1,6 @@
 {
   "version": "0.0.1",
   "configurations": [
-    {
-      "name": "incolo-mockup",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4100", "--directory", "public"],
-      "port": 4100
-    }
+    { "name": "incolo2", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 4100 }
   ]
 }

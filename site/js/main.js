@@ -83,11 +83,11 @@
   const ann = $('#announceText');
   if (ann && !reduced) {
     const msgs = [
-      ['Data residency, your choice: on-premise or private cloud', 'programs.html'],
-      ['Industry 5.0: automations & AI solutions for all', 'index.html#tagline'],
-      ['From scoping to a working pilot on one line in 4–8 weeks', 'programs.html'],
-      ['New: Heat-Exchanger Circuit Router, now in use at a heat-exchanger OEM', 'programs.html?q=circuit'],
-      ['New: Brazing Furnace Optimization program', 'programs.html?q=brazing'],
+      ['Data residency, your choice: on-premise or private cloud', '/solutions/production-systems#deployment'],
+      ['Industry 5.0: automations & AI solutions for all', '/#tagline'],
+      ['From scoping to a working pilot on one line in 4–8 weeks', '/programs'],
+      ['New: Heat-Exchanger Circuit Router, now in use at a heat-exchanger OEM', '/programs/circuit-router'],
+      ['New: Brazing Furnace Optimization program', '/programs/brazing-furnace-optimization'],
     ];
     let i = 0;
     setInterval(() => {
@@ -163,27 +163,52 @@
 
   /* ---------- Scoping-call dialog ---------- */
   const modal = $('#scopeModal');
-  const openModal = (program) => {
-    if (!modal) return;
-    const sel = $('#f-program');
-    if (program && sel) [...sel.options].forEach((o) => { if (o.text.startsWith(program)) sel.value = o.value || o.text; });
-    $('#formStatus').textContent = '';
-    modal.showModal();
+  const selectProgram = (sel, program) => {
+    if (sel && program) [...sel.options].forEach((o) => { if (o.text.startsWith(program)) sel.value = o.value; });
   };
+  const openModal = (program) => {
+    if (!modal || typeof modal.showModal !== 'function') return false;
+    selectProgram($('#m-program'), program);
+    const st = $('.form-status', modal);
+    if (st) { st.textContent = ''; st.className = 'form-status'; }
+    modal.showModal();
+    return true;
+  };
+  // /contact?program=P-01 pre-selects the program on the contact page
+  const qp = new URLSearchParams(location.search).get('program');
+  if (qp) selectProgram($('#c-program'), qp);
   document.addEventListener('click', (e) => {
     const t = e.target.closest('[data-open-modal]');
-    if (!t) return;
-    e.preventDefault();
+    if (!t || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    if (location.pathname === '/contact') { e.preventDefault(); selectProgram($('#c-program'), t.dataset.program); $('#c-name')?.focus(); return; }
     closeAll(); header.classList.remove('menu-open');
-    openModal(t.dataset.program);
+    if (openModal(t.dataset.program)) e.preventDefault(); // otherwise follow the link to /contact
   });
   $$('[data-close-modal]').forEach((b) => b.addEventListener('click', () => modal.close()));
   modal?.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
-  $('#scopeForm')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const f = e.target;
-    if (!f.checkValidity()) { f.reportValidity(); return; }
-    $('#formStatus').textContent = 'Mockup only: in the build this posts to /api/contact and emails business@incolosystems.com.';
+  /* ---------- Contact forms: fetch with inline status; plain POST still works without JS ---------- */
+  $$('form.contact-form').forEach((f) => {
+    const status = $('.form-status', f), btn = $('button[type="submit"]', f), label = $('.btn-label', f);
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!f.checkValidity()) { f.reportValidity(); return; }
+      btn.disabled = true; label.textContent = 'Sending…';
+      status.textContent = ''; status.className = 'form-status';
+      try {
+        const res = await fetch(f.action, {
+          method: 'POST',
+          body: new URLSearchParams(new FormData(f)),
+          headers: { 'X-Requested-With': 'fetch', Accept: 'application/json' },
+        });
+        const d = await res.json().catch(() => ({}));
+        if (res.ok && d.ok) { status.textContent = d.message; status.classList.add('is-ok'); f.reset(); }
+        else { status.textContent = d.message || 'Something went wrong. Please email business@incolosystems.com.'; status.classList.add('is-err'); }
+      } catch {
+        status.textContent = 'Network error. Please try again, or email business@incolosystems.com.'; status.classList.add('is-err');
+      } finally {
+        btn.disabled = false; label.textContent = 'Send enquiry';
+      }
+    });
   });
   window.incoloOpenModal = openModal;
 

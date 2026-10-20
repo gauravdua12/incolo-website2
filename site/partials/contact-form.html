@@ -1,0 +1,30 @@
+<form class="modal-form contact-form" id="{{fid}}-form" action="/api/contact" method="post" novalidate>
+{{#close}}<button class="modal-close" type="button" data-close-modal aria-label="Close"><svg class="ic"><use href="/media/icons.svg#x"/></svg></button>{{/close}}
+        <div class="form-row">
+          <div class="field"><label for="{{fid}}-name">Name <span class="req">*</span></label><input id="{{fid}}-name" name="name" autocomplete="name" required /></div>
+          <div class="field"><label for="{{fid}}-company">Company <span class="req">*</span></label><input id="{{fid}}-company" name="company" autocomplete="organization" required /></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="{{fid}}-email">Work email <span class="req">*</span></label><input id="{{fid}}-email" name="email" type="email" autocomplete="email" required /></div>
+          <div class="field"><label for="{{fid}}-phone">Phone</label><input id="{{fid}}-phone" name="phone" type="tel" autocomplete="tel" /></div>
+        </div>
+        <div class="field">
+          <label for="{{fid}}-program">Program of interest</label>
+          <select id="{{fid}}-program" name="program">
+            <option value="">Not sure yet</option>
+{{programOptions}}
+          </select>
+        </div>
+        <div class="field">
+          <label for="{{fid}}-message">What are you looking to solve? <span class="req">*</span></label>
+          <textarea id="{{fid}}-message" name="message" required></textarea>
+          <span class="help">Tell us about the line, asset, or workflow, and your priority.</span>
+        </div>
+        <div class="form-foot">
+          <p class="fineprint">Your details go straight to our founder. We don't share them, and we don't use a third-party tracker.</p>
+          <button class="btn btn-primary btn-lg" type="submit"><span class="btn-label">Send enquiry</span></button>
+        </div>
+        <!-- Honeypot: hidden from people, catches bots. Do not fill. -->
+        <div class="hp" aria-hidden="true"><label for="{{fid}}-website">Leave this field empty</label><input id="{{fid}}-website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>

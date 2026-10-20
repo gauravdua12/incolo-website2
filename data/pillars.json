@@ -1,0 +1,184 @@
+[
+  {
+    "slug": "production-systems",
+    "icon": "cpu",
+    "name": "AI-Enabled Production Systems",
+    "short": "Vision, maintenance and monitoring, engineered for the line.",
+    "title": "AI-Enabled Production Systems | Incolo Systems",
+    "description": "Computer-vision inspection, predictive maintenance and real-time monitoring, engineered for the shop floor and running on-premise or in your private cloud.",
+    "h1": "Run production AI on your own floor.",
+    "sub": "Computer-vision inspection, predictive maintenance and monitoring, engineered for the shop floor and integrated with the PLCs, SCADA and MES/ERP systems you already run.",
+    "heroImg": "/media/programs/p01-visual-inspection.jpg",
+    "heroAlt": "AI vision cameras inspecting circuit boards on a production line, with a live inspection dashboard",
+    "callouts": [
+      "Sub-second inference at the line",
+      "Human-in-the-loop review queue",
+      "On-prem or private cloud, your call"
+    ],
+    "stats": [
+      [
+        "100%",
+        "Data residency under your control: on-premise or private cloud"
+      ],
+      [
+        "4–8 wks",
+        "From scoping to a working pilot on one line"
+      ],
+      [
+        "4",
+        "Deployment targets: edge, line-side, plant server, private cloud"
+      ]
+    ],
+    "tabsTitle": "Five systems. One private stack.",
+    "tabs": [
+      "P-01",
+      "P-03",
+      "P-05",
+      "P-02",
+      "P-06"
+    ],
+    "architecture": true,
+    "governance": [
+      [
+        "users",
+        "Human-in-the-loop review",
+        "Operators confirm or override AI decisions from a review queue. Every override is logged."
+      ],
+      [
+        "history",
+        "Audit-ready trail",
+        "Defect, count and maintenance records suitable for GMP and OEM reviews."
+      ],
+      [
+        "shield",
+        "Change-control governance",
+        "Model accountability, cybersecurity and change control are built into every deployment from day one."
+      ]
+    ]
+  },
+  {
+    "slug": "advisory",
+    "icon": "compass",
+    "name": "Manufacturing AI Advisory",
+    "short": "From feasibility study to full rollout.",
+    "title": "Manufacturing AI Advisory | Incolo Systems",
+    "description": "A hands-on consulting practice that helps plant and IT/OT leadership design and deploy secure AI across production, quality and maintenance, from feasibility study to full rollout.",
+    "h1": "Plan AI you can trust, then prove it on the line.",
+    "sub": "A hands-on consulting practice that helps plant and IT/OT leadership design and deploy secure AI across production, quality and maintenance, from feasibility study to full rollout.",
+    "heroImg": "/media/programs/p04-production-planning.jpg",
+    "heroAlt": "Laptop showing an AI production-planning co-pilot generating a monthly production report",
+    "callouts": [
+      "Quality gates at every stage",
+      "A measurable business case",
+      "Working pilot in 4–8 weeks"
+    ],
+    "stats": [
+      [
+        "3",
+        "Phases: Assess & Design, Pilot & Validate, Scale & Govern"
+      ],
+      [
+        "4–8 wks",
+        "From scoping to a working pilot on one line"
+      ],
+      [
+        "7",
+        "Manufacturing AI programs ready to scope against"
+      ]
+    ],
+    "phases": true,
+    "principlesTitle": "How we work with plant leadership.",
+    "principles": [
+      [
+        "check",
+        "Validated Before Scaled",
+        "In regulated plants, trust is earned through qualification protocols, audit trails and traceability before a pilot touches live production."
+      ],
+      [
+        "zap",
+        "Execution Over Slides",
+        "We prioritize working pilots on the actual line, with measurable OEE, quality and downtime impact, over strategy decks."
+      ],
+      [
+        "users",
+        "Engineering Partnership",
+        "We embed with plant IT/OT and quality teams, transfer capability and build long-term delivery discipline, not dependency."
+      ]
+    ],
+    "architecture": true,
+    "relatedAll": true,
+    "governance": [
+      [
+        "shield",
+        "Privacy by Architecture",
+        "We engineer privacy into the foundation, not as a feature. Where your data lives is always your decision."
+      ],
+      [
+        "history",
+        "Responsible Innovation",
+        "Model accountability, cybersecurity and change-control governance are built into every deployment, audit-ready by design."
+      ],
+      [
+        "server",
+        "Built for the Shop Floor",
+        "We engineer for edge hardware and private infrastructure because that is where production happens."
+      ]
+    ]
+  },
+  {
+    "slug": "process-modernization",
+    "icon": "workflow",
+    "name": "Agentic Process Modernization",
+    "short": "Paper and spreadsheets → AI-assisted operations.",
+    "title": "Agentic Process Modernization | Incolo Systems",
+    "description": "Convert manual, paper-based or spreadsheet-driven shop-floor processes into AI-assisted operations, with human-in-the-loop governance, audit trails and measurable throughput gains.",
+    "h1": "Turn paper and spreadsheets into AI-assisted operations.",
+    "sub": "Convert manual, paper-based or spreadsheet-driven shop-floor processes into AI-assisted operations, with human-in-the-loop governance, audit trails and measurable throughput gains.",
+    "heroImg": "/media/programs/p07-circuit-router.svg",
+    "heroSvg": true,
+    "heroAlt": "Refrigerant circuit routing layout generated by the Incolo Circuit Router",
+    "callouts": [
+      "Human-in-the-loop by design",
+      "Audit trail on every run",
+      "Measurable throughput gains"
+    ],
+    "stats": [
+      [
+        "2",
+        "Agentic and design-automation programs, with more in the pipeline"
+      ],
+      [
+        "100%",
+        "Data residency under your control: on-premise or private cloud"
+      ],
+      [
+        "4–8 wks",
+        "From scoping to a working pilot on one line"
+      ]
+    ],
+    "tabsTitle": "From manual workflow to AI-assisted operation.",
+    "tabs": [
+      "P-07",
+      "P-04"
+    ],
+    "featured": "P-07",
+    "architecture": true,
+    "governance": [
+      [
+        "users",
+        "People stay in charge",
+        "The AI proposes; planners and engineers approve before anything is committed."
+      ],
+      [
+        "history",
+        "Every run recorded",
+        "Inputs, outputs and decisions are stored for traceability and reuse."
+      ],
+      [
+        "shield",
+        "Rules, not guesswork",
+        "Your team's design and business rules are enforced on every output, with deviations explained."
+      ]
+    ]
+  }
+]
