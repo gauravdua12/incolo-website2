@@ -7,7 +7,9 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "start": "node server.js",
-    "dev": "node scripts/dev.mjs"
+    "dev": "node scripts/dev.mjs",
+    "screens": "node scripts/capture-screens.mjs docs/mockups/build scripts/shots/build-pages.json",
+    "verify": "bash scripts/verify-prod.sh"
   },
   "engines": {
     "node": ">=20"

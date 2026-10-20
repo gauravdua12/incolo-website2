@@ -1,0 +1,16 @@
+[
+  { "name": "b-01-pillar-hero", "url": "http://localhost:4100/solutions/production-systems", "width": 1440, "height": 900 },
+  { "name": "b-02-pillar-tabs", "url": "http://localhost:4100/solutions/production-systems", "width": 1440, "height": 900, "js": "scrollTo(0, document.querySelector('#capabilities').offsetTop - 120)" },
+  { "name": "b-03-pillar-arch", "url": "http://localhost:4100/solutions/production-systems", "width": 1440, "height": 900, "js": "scrollTo(0, document.querySelector('#architecture').offsetTop - 120)" },
+  { "name": "b-04-pillar-deploy", "url": "http://localhost:4100/solutions/production-systems", "width": 1440, "height": 900, "js": "scrollTo(0, document.querySelector('#deployment').offsetTop - 120)" },
+  { "name": "b-05-advisory-hero", "url": "http://localhost:4100/solutions/advisory", "width": 1440, "height": 900 },
+  { "name": "b-06-modernization-featured", "url": "http://localhost:4100/solutions/process-modernization", "width": 1440, "height": 900, "js": "scrollTo(0, document.querySelector('.band.featured').getBoundingClientRect().top + scrollY - 300)" },
+  { "name": "b-07-detail-hero", "url": "http://localhost:4100/programs/visual-inspection", "width": 1440, "height": 900 },
+  { "name": "b-08-detail-circuit", "url": "http://localhost:4100/programs/circuit-router", "width": 1440, "height": 900 },
+  { "name": "b-09-detail-circuit-rules", "url": "http://localhost:4100/programs/circuit-router", "width": 1440, "height": 900, "js": "scrollTo(0, document.querySelector('.detail-two').getBoundingClientRect().top + scrollY - 100)" },
+  { "name": "b-10-contact", "url": "http://localhost:4100/contact", "width": 1440, "height": 900 },
+  { "name": "b-11-404", "url": "http://localhost:4100/does-not-exist", "width": 1440, "height": 900 },
+  { "name": "b-12-mobile-pillar", "url": "http://localhost:4100/solutions/production-systems", "width": 390, "height": 844, "scale": 2 },
+  { "name": "b-13-mobile-detail", "url": "http://localhost:4100/programs/circuit-router", "width": 390, "height": 844, "scale": 2 },
+  { "name": "b-14-mobile-arch", "url": "http://localhost:4100/solutions/production-systems", "width": 390, "height": 844, "scale": 2, "js": "scrollTo(0, document.querySelector('#architecture').offsetTop - 100)" }
+]
