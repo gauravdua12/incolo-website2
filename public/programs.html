@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Manufacturing AI Programs | Incolo Systems</title>
-  <meta name="description" content="Seven focused, time-boxed manufacturing AI programs, covering visual inspection, packaging verification, predictive maintenance, production planning, shop-floor monitoring, brazing furnace optimization and heat-exchanger circuit routing. Every one runs on-premise." />
+  <meta name="description" content="Seven focused, time-boxed manufacturing AI programs, covering visual inspection, packaging verification, predictive maintenance, production planning, shop-floor monitoring, brazing furnace optimization and heat-exchanger circuit routing. Every one runs on-premise or in your private cloud, your choice." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preload" href="fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="styles/tokens.css" />
-  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/tokens.css?v=4" />
+  <link rel="stylesheet" href="styles/main.css?v=4" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -117,8 +117,8 @@
         <div class="filters-head"><strong>Filters</strong><button type="button" id="clearAll">Clear all</button></div>
         <div id="filterGroups"></div>
         <div class="promo">
-          <strong><svg class="ic-sm"><use href="media/icons.svg#lock"/></svg>Every program runs on-premise.</strong>
-          <p>Inference stays on your edge gateways, line-side compute or plant servers.</p>
+          <strong><svg class="ic-sm"><use href="media/icons.svg#lock"/></svg>Your data, your residency.</strong>
+          <p>Every program runs on-premise (edge gateways, line-side compute, plant servers) or in your private cloud. Where it runs is your decision.</p>
           <a class="btn btn-primary" href="#" data-open-modal>Book a scoping call</a>
         </div>
         <button class="btn btn-primary btn-lg mobile-filter-btn" type="button" id="applyFilters" style="width:100%;margin-top:16px">Show results</button>
@@ -159,7 +159,7 @@
       <div class="container">
         <div class="section-head reveal"><span class="eyebrow">FAQ</span><h2 class="h2">Questions plant leaders ask first.</h2></div>
         <div class="faq reveal">
-          <details open><summary>Does any of our data leave the plant?<svg class="ic"><use href="media/icons.svg#plus"/></svg></summary><p>No. Inference runs on-premise on edge gateways, line-side compute or private plant servers. There is no server-side logging of proprietary parameters, no training on your production data, and no third-party broker in the pipeline.</p></details>
+          <details open><summary>Where does our data live?<svg class="ic"><use href="media/icons.svg#plus"/></svg></summary><p>Wherever you decide. Data residency is your call: deploy on-premise on edge gateways, line-side compute or private plant servers, or in your own private cloud. Either way it stays within your firewall, with no server-side logging of proprietary parameters, no training on your production data, and no third-party broker in the pipeline.</p></details>
           <details><summary>How long until we see a working pilot?<svg class="ic"><use href="media/icons.svg#plus"/></svg></summary><p>Typically 4–8 weeks from scoping to a working pilot on one line.</p></details>
           <details><summary>Do we need to replace our existing systems?<svg class="ic"><use href="media/icons.svg#plus"/></svg></summary><p>No. Programs integrate with your existing PLCs, SCADA, MES/ERP and CMMS/EAM systems.</p></details>
           <details><summary>We're in a regulated plant. Can you support validation?<svg class="ic"><use href="media/icons.svg#plus"/></svg></summary><p>Yes. Qualification protocols, audit trails and traceability are completed before a pilot touches live production.</p></details>
@@ -185,7 +185,9 @@
       <div class="footer-top">
         <div class="footer-brand">
           <a class="brand" href="index.html"><img src="media/logo-mark.png" width="105" height="120" alt="" /><span>Incolo Systems</span></a>
+          <span class="footer-tag">Industry 5.0<span class="sep">|</span>Automations &amp; AI solutions for all</span>
           <p>Private AI for the shop floor.</p>
+          <p class="footer-hi" lang="hi">आपका बिजनेस, हमारा साथ, आपका निजी AI।</p>
           <div class="socials"><a href="#" aria-label="LinkedIn (URL to confirm)"><svg class="ic-sm"><use href="media/icons.svg#linkedin"/></svg></a></div>
         </div>
         <div class="footer-col">
@@ -198,7 +200,7 @@
         </div>
         <div class="footer-col">
           <h4>Company</h4>
-          <ul><li><a href="index.html#why">Why Incolo</a></li><li><a href="index.html#values">Vision &amp; values</a></li><li><a href="#" data-open-modal>Contact</a></li><li><a href="mailto:business@incolosystems.com">business@incolosystems.com</a></li><li><a href="tel:+919920323832">+91 99203 23832</a></li></ul>
+          <ul><li><a href="index.html#why">Why Incolo</a></li><li><a href="index.html#values">Vision &amp; values</a></li><li><a href="index.html#standards">Industry 4.0 standards</a></li><li><a href="#" data-open-modal>Contact</a></li><li><a href="mailto:business@incolosystems.com">business@incolosystems.com</a></li><li><a href="tel:+919920323832">+91 99203 23832</a></li></ul>
         </div>
       </div>
       <div class="footer-bottom">
@@ -282,7 +284,7 @@
     </div>
   </dialog>
 
-  <script src="js/main.js" defer></script>
-  <script src="js/programs.js" defer></script>
+  <script src="js/main.js?v=4" defer></script>
+  <script src="js/programs.js?v=4" defer></script>
 </body>
 </html>

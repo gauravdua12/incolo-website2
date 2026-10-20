@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Incolo Systems | Private, on-edge AI for industrial manufacturing</title>
-  <meta name="description" content="Incolo Systems brings production-grade AI directly to your shop floor: computer-vision inspection, predictive maintenance, production planning and real-time monitoring. It runs on-premise, so your process data never leaves the plant." />
+  <meta name="description" content="Incolo Systems brings production-grade AI directly to your shop floor: computer-vision inspection, predictive maintenance, production planning and real-time monitoring. It runs on-premise or in your private cloud, so data residency is always your decision." />
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preload" href="fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="styles/tokens.css" />
-  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/tokens.css?v=4" />
+  <link rel="stylesheet" href="styles/main.css?v=4" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -85,11 +85,11 @@
       <div class="container hero-inner">
         <a class="announce" href="programs.html" id="announce">
           <span class="dot" aria-hidden="true"></span>
-          <span class="announce-text" id="announceText">100% on-premise inference: zero data leaves the plant</span>
+          <span class="announce-text" id="announceText">Data residency, your choice: on-premise or private cloud</span>
           <span class="go" aria-hidden="true"><svg><use href="media/icons.svg#arrow-right"/></svg></span>
         </a>
         <h1 class="h1">Private AI for the shop floor</h1>
-        <p class="lede">Production-grade AI for inspection, maintenance, planning and monitoring, running inside your plant and owned entirely by you.</p>
+        <p class="lede">Production-grade AI for inspection, maintenance, planning and monitoring, running on-premise or in your private cloud, and owned entirely by you.</p>
         <div class="hero-actions">
           <a class="btn btn-primary btn-lg" href="#" data-open-modal>Book a scoping call</a>
           <a class="btn btn-secondary btn-lg" href="programs.html">Explore AI programs</a>
@@ -195,7 +195,10 @@
     <section class="trust">
       <div class="container">
         <p class="trust-line reveal">Built for plants where data can't leave the building. <span>From single-line pilots to multi-plant rollouts.</span></p>
-        <span class="badge-pill reveal"><svg class="ic-sm"><use href="media/icons.svg#shield"/></svg> Zero third-party trackers · Private by design</span>
+        <div class="badge-row reveal">
+          <span class="badge-pill"><svg class="ic-sm"><use href="media/icons.svg#server"/></svg> On-premise or private cloud: data residency is your decision</span>
+          <span class="badge-pill"><svg class="ic-sm"><use href="media/icons.svg#shield"/></svg> Zero third-party trackers · Private by design</span>
+        </div>
 
         <div class="industries reveal">
           <div class="industry"><svg><use href="media/icons.svg#pill"/></svg><span>Pharma</span></div>
@@ -207,10 +210,21 @@
         </div>
 
         <div class="stats reveal">
-          <div class="stat"><div class="k">100%</div><div class="v">Inference on-premise: zero data leaves the plant</div></div>
+          <div class="stat"><div class="k">100%</div><div class="v">Data residency under your control: on-premise or private cloud, your call</div></div>
           <div class="stat"><div class="k">4–8 wks</div><div class="v">From scoping to a working pilot on one line</div></div>
           <div class="stat"><div class="k">7</div><div class="v">High-impact manufacturing AI programs, with more in the pipeline</div></div>
         </div>
+      </div>
+    </section>
+
+    <!-- ===================== Tagline band (Industry 5.0) ===================== -->
+    <section class="tagline-band" id="tagline">
+      <svg class="binary" data-binary aria-hidden="true"></svg>
+      <div class="container">
+        <p class="tagline-eyebrow reveal">Industry 5.0<span class="sep">|</span>Automations &amp; AI solutions for all</p>
+        <div class="tagline-rule reveal" aria-hidden="true"></div>
+        <h2 class="tagline-hi reveal" lang="hi">आपका बिजनेस, हमारा साथ, आपका निजी AI।</h2>
+        <p class="tagline-en reveal">Your business. Our partnership. Your private AI.</p>
       </div>
     </section>
 
@@ -220,8 +234,13 @@
         <div class="sc-sticky">
           <div class="sc-text active" data-step="0">
             <span class="chip"><span class="chip-ic"><svg><use href="media/icons.svg#cpu"/></svg></span>AI-Enabled Production Systems</span>
-            <h2 class="h2">AI that runs on your line, not in someone else's cloud.</h2>
-            <p>Computer-vision inspection, predictive maintenance and real-time monitoring, engineered for the shop floor. Deployed on edge gateways, line-side compute or private plant servers, and integrated with your existing PLCs, SCADA and MES/ERP systems.</p>
+            <h2 class="h2"><span class="h2-kicker">Data residency</span>AI that runs within your firewall, with your total control.</h2>
+            <p>Computer-vision inspection, predictive maintenance and real-time monitoring, engineered for the shop floor and integrated with your existing PLCs, SCADA and MES/ERP systems.</p>
+            <ul class="residency">
+              <li><svg class="ic-sm"><use href="media/icons.svg#server"/></svg><span><b>On-premise</b>Edge gateways, line-side compute or private plant servers</span></li>
+              <li><svg class="ic-sm"><use href="media/icons.svg#lock"/></svg><span><b>Private cloud</b>Your own tenancy, inside your security perimeter</span></li>
+            </ul>
+            <p class="residency-note">Where your AI and data live is always your decision. We engineer for either.</p>
             <div class="sc-actions"><a class="btn btn-primary btn-md" href="#" data-open-modal>Book a scoping call</a><a class="btn btn-secondary btn-md" href="programs.html">Explore <svg class="ic-sm go"><use href="media/icons.svg#arrow-up-right"/></svg></a></div>
           </div>
           <div class="sc-text" data-step="1">
@@ -243,8 +262,8 @@
           <div class="sc-step" data-step="0">
             <div class="sc-step-copy">
               <span class="chip"><span class="chip-ic"><svg><use href="media/icons.svg#cpu"/></svg></span>AI-Enabled Production Systems</span>
-              <h2 class="h2">AI that runs on your line, not in someone else's cloud.</h2>
-              <p>Computer-vision inspection, predictive maintenance and real-time monitoring, engineered for the shop floor and integrated with your PLCs, SCADA and MES/ERP.</p>
+              <h2 class="h2"><span class="h2-kicker">Data residency</span>AI that runs within your firewall, with your total control.</h2>
+              <p>On-premise or private cloud: where your AI and data live is always your decision. We engineer for either.</p>
             </div>
             <div class="frame"><div class="frame-inner"><img src="media/programs/p01-visual-inspection.jpg" width="1200" height="655" loading="lazy" alt="AI vision cameras inspecting circuit boards on a production line, with a live inspection dashboard" /></div></div>
           </div>
@@ -309,7 +328,7 @@
             <div class="prompt-bar"><svg class="ic"><use href="media/icons.svg#paperclip"/></svg><span class="send" id="send"><svg><use href="media/icons.svg#arrow-up"/></svg></span></div>
           </div>
           <div class="ask-suggest" id="askSuggest"></div>
-          <span class="ask-note"><svg class="ic-sm"><use href="media/icons.svg#lock"/></svg> Runs on your plant server · no data leaves the network</span>
+          <span class="ask-note"><svg class="ic-sm"><use href="media/icons.svg#lock"/></svg> Runs on your plant server or private cloud · your data stays under your control</span>
         </div>
       </div>
     </section>
@@ -326,7 +345,7 @@
           <div class="why-slides" id="whySlides">
             <div class="why-slide active">
               <span class="count">01 / 03</span>
-              <blockquote>“On-premise and edge inference means <span class="mark-hl">production, quality and process data never leave the plant.</span> No server-side logging of proprietary parameters, no training on your production data, no third-party broker in the pipeline.”</blockquote>
+              <blockquote>“On-premise or private cloud, <span class="mark-hl">you decide where production, quality and process data live, and it never leaves your control.</span> No server-side logging of proprietary parameters, no training on your production data, no third-party broker in the pipeline.”</blockquote>
               <cite>Plant-floor privacy you can verify<span>Incolo Systems · Trust by Design</span></cite>
             </div>
             <div class="why-slide">
@@ -373,6 +392,28 @@
       </div>
     </section>
 
+    <!-- ===================== Industry 4.0 standards ===================== -->
+    <section class="section" id="standards" style="padding-top:0">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Industry 4.0 standards</span>
+          <h2 class="h2">Built on open Industry 4.0 standards.</h2>
+          <p>Every Incolo deployment is designed around the open standards your plant already speaks, so AI connects cleanly, stays secure and stands up to audit, whether it runs on-premise or in your private cloud.</p>
+        </div>
+        <div class="standards reveal">
+          <article class="standard"><span class="code">IEC 62541</span><h3>OPC UA</h3><p>Secure, vendor-neutral data exchange with PLCs, SCADA and machine controllers.</p></article>
+          <article class="standard"><span class="code">MQTT · Sparkplug B</span><h3>Edge telemetry</h3><p>Lightweight publish/subscribe streaming from sensors and edge gateways.</p></article>
+          <article class="standard"><span class="code">ISA-95 · IEC 62264</span><h3>Enterprise–control integration</h3><p>Clean hand-offs between shop floor, MES and ERP layers, with no point-to-point spaghetti.</p></article>
+          <article class="standard"><span class="code">ISA/IEC 62443</span><h3>Industrial cybersecurity</h3><p>Zones, conduits and least-privilege access for every edge node and model server.</p></article>
+          <article class="standard"><span class="code">RAMI 4.0 · AAS</span><h3>Asset Administration Shell</h3><p>Digital twins of machines and assets in a standard, portable format.</p></article>
+          <article class="standard"><span class="code">ISO 22400</span><h3>Manufacturing KPIs</h3><p>OEE, throughput and quality metrics calculated to the international definition.</p></article>
+          <article class="standard"><span class="code">Modbus · PROFINET · EtherNet/IP</span><h3>Brownfield connectivity</h3><p>Fieldbus links to existing equipment, so older lines join without a rip-and-replace.</p></article>
+          <article class="standard"><span class="code">GAMP 5 · 21 CFR Part 11</span><h3>Validated, audit-ready AI</h3><p>Qualification, electronic records and audit trails for GMP-regulated plants.</p></article>
+        </div>
+        <p class="standards-foot reveal"><b>Industry 4.0 foundations</b><span class="arrow">→</span><b>Industry 5.0 outcomes</b><span>· connected, secure and human-centric</span></p>
+      </div>
+    </section>
+
     <!-- ===================== Vision & values ===================== -->
     <section class="section" id="values" style="padding-top:0">
       <div class="container">
@@ -412,7 +453,9 @@
       <div class="footer-top">
         <div class="footer-brand">
           <a class="brand" href="index.html"><img src="media/logo-mark.png" width="105" height="120" alt="" /><span>Incolo Systems</span></a>
+          <span class="footer-tag">Industry 5.0<span class="sep">|</span>Automations &amp; AI solutions for all</span>
           <p>Private AI for the shop floor.</p>
+          <p class="footer-hi" lang="hi">आपका बिजनेस, हमारा साथ, आपका निजी AI।</p>
           <div class="socials"><a href="#" aria-label="LinkedIn (URL to confirm)"><svg class="ic-sm"><use href="media/icons.svg#linkedin"/></svg></a></div>
         </div>
         <div class="footer-col">
@@ -425,7 +468,7 @@
         </div>
         <div class="footer-col">
           <h4>Company</h4>
-          <ul><li><a href="index.html#why">Why Incolo</a></li><li><a href="index.html#values">Vision &amp; values</a></li><li><a href="#" data-open-modal>Contact</a></li><li><a href="mailto:business@incolosystems.com">business@incolosystems.com</a></li><li><a href="tel:+919920323832">+91 99203 23832</a></li></ul>
+          <ul><li><a href="index.html#why">Why Incolo</a></li><li><a href="index.html#values">Vision &amp; values</a></li><li><a href="index.html#standards">Industry 4.0 standards</a></li><li><a href="#" data-open-modal>Contact</a></li><li><a href="mailto:business@incolosystems.com">business@incolosystems.com</a></li><li><a href="tel:+919920323832">+91 99203 23832</a></li></ul>
         </div>
       </div>
       <div class="footer-bottom">
@@ -509,6 +552,6 @@
     </div>
   </dialog>
 
-  <script src="js/main.js" defer></script>
+  <script src="js/main.js?v=4" defer></script>
 </body>
 </html>

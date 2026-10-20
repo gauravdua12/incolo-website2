@@ -100,7 +100,7 @@
         <p class="desc">${esc(p.desc)}</p>
         <ul class="outcomes">${p.outcomes.map((o) => `<li>${icon('check')}${esc(o)}</li>`).join('')}</ul>
         <div class="pcard-foot">
-          <div class="pcard-meta">${(p.meta || [['shield', 'On-premise'], ['clock', 'Pilot in 4–8 wks']]).map(([i, t]) => `<span>${icon(i)}${t}</span>`).join('')}</div>
+          <div class="pcard-meta">${(p.meta || [['shield', 'On-prem or private cloud'], ['clock', 'Pilot in 4–8 wks']]).map(([i, t]) => `<span>${icon(i)}${t}</span>`).join('')}</div>
           <div class="pcard-actions">
             <a class="btn btn-secondary" href="#" data-open-modal data-program="${p.id}">View program ${icon('arrow-up-right', 'ic-sm go')}</a>
             <a class="btn btn-primary" href="#" data-open-modal data-program="${p.id}">Request a pilot</a>

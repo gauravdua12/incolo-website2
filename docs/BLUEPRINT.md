@@ -745,3 +745,47 @@ Next.js would only pay off for thousands of server-rendered directory pages (Key
 5. **Socials.** Should the footer show a LinkedIn (or other) URL?
 6. **Canonical domain.** Is it `incolo.si` or `incolosystems.com`? This affects canonical tags, the sitemap and OG URLs.
 7. **Phase wording.** Do the expanded Assess / Pilot / Scale descriptions on Page 2 match how you run engagements?
+
+---
+
+## 6. Revision 3: data residency, Industry 5.0 tagline, Industry 4.0 standards
+
+*Requested 2026-10-20 after look-and-feel approval. Kept on branch `rev3-data-residency` until signed off.*
+
+### 6.1 Showcase panel 1 headline
+- **Kicker:** DATA RESIDENCY
+- **H2:** AI that runs within your firewall, with your total control. *(replaces "AI that runs on your line, not in someone else's cloud.")*
+- **New option cards:** **On-premise**: edge gateways, line-side compute or private plant servers · **Private cloud**: your own tenancy, inside your security perimeter
+- **Note:** Where your AI and data live is always your decision. We engineer for either.
+
+### 6.2 "Data residency is the customer's decision" message, applied site-wide
+| Place | New copy |
+|---|---|
+| Hero pill (first message) | Data residency, your choice: on-premise or private cloud |
+| Hero sub-line | …running on-premise or in your private cloud, and owned entirely by you. |
+| Trust strip badge (new) | On-premise or private cloud: data residency is your decision |
+| Stat "100%" | Data residency under your control: on-premise or private cloud, your call |
+| "Just ask." pill | Runs on your plant server or private cloud · your data stays under your control |
+| Why Incolo slide 1 | On-premise or private cloud, ==you decide where production, quality and process data live, and it never leaves your control.== … |
+| Programs sidebar promo | **Your data, your residency.** Every program runs on-premise (edge gateways, line-side compute, plant servers) or in your private cloud. Where it runs is your decision. |
+| Program card meta | On-prem or private cloud · Pilot in 4–8 wks |
+| Programs FAQ #1 | **Where does our data live?** Wherever you decide. Data residency is your call: on-premise or your own private cloud. Either way it stays within your firewall… |
+| Meta descriptions | …runs on-premise or in your private cloud… |
+
+### 6.3 Industry 5.0 tagline
+- **Tagline band** (new section between the trust strip and the showcase; Incolo blue on a faint binary-digit texture, after the supplied artwork):
+  - Eyebrow: INDUSTRY 5.0 | AUTOMATIONS & AI SOLUTIONS FOR ALL
+  - Short blue rule
+  - Headline (Hindi): **आपका बिजनेस, हमारा साथ, आपका निजी AI।**
+  - English line: Your business. Our partnership. Your private AI.
+- **Also in:** footer brand block (eyebrow + Hindi line) and the hero pill rotation ("Industry 5.0: automations & AI solutions for all").
+- **Font:** the mockup uses the system Devanagari font (Kohinoor Devanagari on macOS, Nirmala UI on Windows). The build will self-host **Noto Sans Devanagari** so it looks the same everywhere.
+
+### 6.4 Industry 4.0 standards (new section, after Integrations)
+- **Eyebrow:** INDUSTRY 4.0 STANDARDS · **H2:** Built on open Industry 4.0 standards.
+- **Body:** Every Incolo deployment is designed around the open standards your plant already speaks, so AI connects cleanly, stays secure and stands up to audit, whether it runs on-premise or in your private cloud.
+- **Eight cards:** OPC UA (IEC 62541) · MQTT / Sparkplug B · ISA-95 (IEC 62264) · ISA/IEC 62443 · RAMI 4.0 / Asset Administration Shell · ISO 22400 KPIs · Modbus / PROFINET / EtherNet/IP · GAMP 5 / 21 CFR Part 11
+- **Footer line:** Industry 4.0 foundations → Industry 5.0 outcomes · connected, secure and human-centric
+- Footer "Company" column gains an **Industry 4.0 standards** link.
+
+> ⚠ **To confirm before going live:** that Incolo actually supports or aligns with each listed standard. Remove any that don't apply. The copy says "designed around", not "certified to".

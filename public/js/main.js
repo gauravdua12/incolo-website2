@@ -59,11 +59,32 @@
       pts.map((p) => `<circle cx="${p[0] | 0}" cy="${p[1] | 0}" r="2.2" fill="#b9d0ec"/>`).join('');
   });
 
+  /* ---------- Binary-digit texture (tagline band) ---------- */
+  $$('svg[data-binary]').forEach((svg) => {
+    let seed = 42;
+    const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
+    const W = 1440, H = 360, step = 34;
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+    let out = '';
+    for (let x = 18; x < W; x += step) {
+      if (rnd() < 0.18) continue; // gaps between columns, like falling code
+      const start = rnd() * H * 0.5;
+      for (let y = 24 + start * 0.2; y < H; y += 36) {
+        if (rnd() < 0.12) continue;
+        const o = (0.07 + rnd() * 0.12).toFixed(2), fs = rnd() < 0.3 ? 14 : 22;
+        out += `<text x="${x}" y="${y | 0}" font-size="${fs}" fill-opacity="${o}">${rnd() < 0.5 ? 0 : 1}</text>`;
+      }
+    }
+    svg.innerHTML = `<g fill="#1d65cc" font-family="IBM Plex Mono, monospace">${out}</g>`;
+  });
+
   /* ---------- Announcement pill rotation ---------- */
   const ann = $('#announceText');
   if (ann && !reduced) {
     const msgs = [
-      ['100% on-premise inference: zero data leaves the plant', 'programs.html'],
+      ['Data residency, your choice: on-premise or private cloud', 'programs.html'],
+      ['Industry 5.0: automations & AI solutions for all', 'index.html#tagline'],
       ['From scoping to a working pilot on one line in 4–8 weeks', 'programs.html'],
       ['New: Heat-Exchanger Circuit Router, now in use at a heat-exchanger OEM', 'programs.html?q=circuit'],
       ['New: Brazing Furnace Optimization program', 'programs.html?q=brazing'],
