@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <!-- Source for the 1200×630 link-preview image (WhatsApp, Facebook, LinkedIn, X).
-     Render with:  npm run og   → site/media/og-image-v2.jpg
-     When the wording changes, bump the file name (v3, …) in package.json + data/site.json,
+     Render with:  npm run og   → site/media/og-image-v3.jpg (rendered at 2×, downscaled, 4:4:4 JPEG)
+     Keep text large: LinkedIn/WhatsApp show this ~550px wide, so anything under ~30px here blurs.
+     When the wording changes, bump the file name (v4, …) in scripts/og/shot.json + data/site.json,
      because Facebook and WhatsApp cache preview images by URL. -->
 <html lang="en">
 <head>
@@ -20,19 +21,19 @@
       #ffffff;
   }
   svg.net { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .card { position: absolute; inset: 0; padding: 64px 72px 56px; display: flex; flex-direction: column; }
-  .brand { display: flex; align-items: center; gap: 16px; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; }
-  .brand img { width: 46px; height: auto; }
-  .eyebrow { margin-top: 52px; font-size: 17px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #1d65cc; }
+  .card { position: absolute; inset: 0; padding: 60px 72px 58px; display: flex; flex-direction: column; }
+  .brand { display: flex; align-items: center; gap: 18px; font-size: 40px; font-weight: 600; letter-spacing: -0.02em; }
+  .brand img { width: 58px; height: auto; }
+  .eyebrow { margin-top: 44px; font-size: 24px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #1d65cc; }
   .eyebrow b { font-weight: 500; color: #3b82f6; margin: 0 .7em; letter-spacing: 0; }
-  h1 { margin-top: 18px; font-size: 76px; line-height: 80px; font-weight: 400; letter-spacing: -0.035em; }
-  .sub { margin-top: 22px; max-width: 900px; font-size: 28px; line-height: 38px; color: #4f647c; letter-spacing: -0.01em; }
-  .sub strong { color: #0b2340; font-weight: 500; }
+  h1 { margin-top: 16px; font-size: 84px; line-height: 92px; font-weight: 500; letter-spacing: -0.04em; white-space: nowrap; }
+  .sub { margin-top: 22px; font-size: 40px; line-height: 50px; color: #2b4a6b; letter-spacing: -0.015em; }
+  .sub strong { color: #1d65cc; font-weight: 600; }
   .foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; }
-  .hi { font-family: 'Noto Sans Devanagari', 'Inter var', sans-serif; font-size: 30px; font-weight: 600; color: #14498f; }
-  .pill { display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 20px; border-radius: 999px; background: #1d65cc; color: #fff; font-size: 20px; font-weight: 500; }
-  .pill i { width: 9px; height: 9px; border-radius: 50%; background: #9cc4ff; }
-  .rule { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: linear-gradient(90deg, #1d65cc, #3b82f6 60%, #8fb8f0); }
+  .hi { font-family: 'Noto Sans Devanagari', 'Inter var', sans-serif; font-size: 38px; font-weight: 600; color: #14498f; }
+  .pill { display: inline-flex; align-items: center; gap: 12px; height: 60px; padding: 0 26px; border-radius: 999px; background: #1d65cc; color: #fff; font-size: 28px; font-weight: 600; }
+  .pill i { width: 11px; height: 11px; border-radius: 50%; background: #9cc4ff; }
+  .rule { position: absolute; left: 0; right: 0; bottom: 0; height: 10px; background: linear-gradient(90deg, #1d65cc, #3b82f6 60%, #8fb8f0); }
 </style>
 </head>
 <body>
@@ -41,7 +42,7 @@
     <div class="brand"><img src="../../site/media/logo-mark.png" alt="" />Incolo Systems</div>
     <p class="eyebrow">Industry 5.0<b>|</b>Automations &amp; AI solutions for all</p>
     <h1>Private AI for the shop floor</h1>
-    <p class="sub">Inspection, maintenance, planning and monitoring, <strong>on-premise or in your private cloud.</strong> Data residency is your decision.</p>
+    <p class="sub"><strong>On-premise or private cloud.</strong><br />Your data, your decision.</p>
     <div class="foot">
       <span class="hi" lang="hi">आपका बिजनेस, हमारा साथ, आपका निजी AI।</span>
       <span class="pill"><i></i>incolo.si</span>
@@ -51,7 +52,7 @@
   <script>
     // Same seeded network-line texture as the site hero, kept to the right-hand side.
     let seed = 11; const rnd = () => ((seed = (seed * 9301 + 49297) % 233280) / 233280);
-    const pts = []; for (let i = 0; i < 34; i++) pts.push([560 + rnd() * 660, rnd() * 630]);
+    const pts = []; for (let i = 0; i < 26; i++) pts.push([760 + rnd() * 460, rnd() * 630]);
     let d = '';
     pts.forEach((p, i) => pts.map((q, j) => [j, Math.hypot(p[0] - q[0], p[1] - q[1])]).filter(([j]) => j > i)
       .sort((a, b) => a[1] - b[1]).slice(0, 2).forEach(([j, dist]) => { if (dist < 220) d += `M${p[0]|0} ${p[1]|0}L${pts[j][0]|0} ${pts[j][1]|0}`; }));
