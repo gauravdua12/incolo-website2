@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Incolo Systems 2.0 — design tokens
+   Keychain-style structure (white canvas, light headings, one loud accent)
+   carrying Incolo's blue identity. See docs/BLUEPRINT.md §1.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Inter var';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../fonts/inter-latin-var.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/ibm-plex-mono-500-latin.woff2') format('woff2');
+}
+
+:root {
+  color-scheme: light;
+
+  /* ---- Surfaces ---- */
+  --white: #ffffff;
+  --bg: #f7fafd;
+  --bg-2: #eef4fb;
+  --surface-tint: #f2f7fd;
+  --ink: #0d2c52;
+  --ink-2: #103464;
+
+  /* ---- Lines ---- */
+  --border: #e2ecf6;
+  --border-strong: #cfdeee;
+
+  /* ---- Text ---- */
+  --text-strong: #0b2340;
+  --text: #14324f;
+  --text-muted: #4f647c;
+  --text-faint: #8098b0;
+  --text-on-ink: #eef4fc;
+  --text-on-ink-muted: #a9c2de;
+
+  /* ---- Accent: Incolo blue (replaces Keychain yellow) ---- */
+  --accent: #1d65cc;
+  --accent-hover: #185aba;
+  --accent-press: #14498f;
+  --accent-bright: #3b82f6;
+  --accent-soft: #dcebfc;
+  --accent-softer: #edf4fe;
+  --glow: #d7e9ff;
+
+  --data: #0e9384;
+  --danger: #c02b2b;
+
+  /* ---- Type ---- */
+  --font: 'Inter var', 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --track-tight: -0.032em;
+
+  /* ---- Shape ---- */
+  --r-btn: 6px;
+  --r-card: 12px;
+  --r-frame: 16px;
+  --r-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(13, 44, 82, 0.06);
+  --shadow-md: 0 10px 30px -8px rgba(13, 44, 82, 0.14), 0 2px 6px rgba(13, 44, 82, 0.05);
+
+  /* ---- Layout ---- */
+  --container: 1280px;
+  --gutter: 32px;
+  --header-h: 64px;
+  --section-y: 112px;
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(0.22, 0.61, 0.24, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --gutter: 16px;
+    --section-y: 72px;
+    --header-h: 60px;
+  }
+}
