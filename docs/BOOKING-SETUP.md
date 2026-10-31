@@ -51,7 +51,7 @@ Stay signed in as **success@incolosystems.com**. (If you already created the `In
    - Authorized domains → **Add domain**: `incolo.si`
    - Developer contact information: `success@incolosystems.com`
 
-   The privacy and terms pages ship with the next deploy. You can save the links before it's live; Google only fetches it if you apply for verification, which you don't need.
+   The privacy and terms pages ship with the next deploy. You can save the links before they're live; Google only fetches them if you apply for verification, which you don't need.
 4. **Audience → Publish app → Confirm** so the status reads **In production**.
    **This matters:** in "Testing" mode Google expires the connection after 7 days and bookings stop working. You don't need Google's verification review, because only your own account uses the app.
 5. **Clients → Create client** → Application type **Desktop app** → name `Incolo website` → **Create**. Copy the **Client ID** and **Client secret**.
