@@ -158,9 +158,10 @@ function build() {
       navWhy: nav === 'why' ? ' active' : '',
     };
     const canonical = SITE_URL + urlPath;
-    const scripts = ['main', ...(meta.scripts || [])].map((s) => `  <script src="/js/${s}.js?v=${v}" defer></script>`).join('\n');
+    // Bare pages (/admin) get no site chrome and only their own scripts.
+    const scripts = (meta.bare ? meta.scripts || [] : ['main', 'booking', ...(meta.scripts || [])]).map((s) => `  <script src="/js/${s}.js?v=${v}" defer></script>`).join('\n');
     const html = head({ ...meta, canonical, v, urlPath }) +
-      render(`{{> header}}\n${body}\n{{> footer}}\n{{> modal}}\n`, vars, partials) +
+      render(meta.bare ? body : `{{> header}}\n${body}\n{{> footer}}\n{{> modal}}\n`, vars, partials) +
       (meta.inlineData || '') + scripts + '\n</body>\n</html>\n';
     const out = urlPath === '/' ? 'index.html' : urlPath.replace(/^\//, '') + '.html';
     mkdirSync(dirname(join(DIST, out)), { recursive: true });
@@ -206,7 +207,7 @@ function build() {
 ${urls.map((u) => `  <url><loc>${SITE_URL}${u}</loc><lastmod>${today}</lastmod></url>`).join('\n')}
 </urlset>
 `);
-  writeFileSync(join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+  writeFileSync(join(DIST, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 
   // 5. Production guard: fail the build rather than ship a page that breaks link
   //    previews or Facebook domain verification.

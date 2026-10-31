@@ -9,7 +9,7 @@ npm install
 npm run dev        # builds, watches, serves http://127.0.0.1:4100
 ```
 
-Without `SMTP_HOST` in `.env`, enquiries are saved to `leads.jsonl` but no email is sent.
+Without `SMTP_HOST` in `.env`, enquiries are saved to `leads.jsonl` but no email is sent. For the booking calendar without Google credentials, add `BOOKING_DRY_RUN=true` to `.env` (fake Meet links; invites saved to `outbox/`). Run the tests with `npm test`.
 
 ## Layout
 
@@ -36,6 +36,7 @@ docs/              BLUEPRINT.md (design + copy), MIGRATION.md (go-live runbook),
 | Verification tags, OG image, canonical domain, Facebook App ID | `data/site.json` |
 | Header, footer, dialog | `site/partials/*.html` |
 | Colours, type, spacing | `site/styles/tokens.css` |
+| Scoping-call invitees, hours, call length, holidays | `/admin` on the live site (see [docs/BOOKING-SETUP.md](docs/BOOKING-SETUP.md)) |
 
 After any change: `npm run build` (the dev server does this automatically).
 

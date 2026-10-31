@@ -161,7 +161,7 @@
     play();
   }
 
-  /* ---------- Scoping-call dialog ---------- */
+  /* ---------- Scoping-call dialog (booking widget lives in booking.js) ---------- */
   const modal = $('#scopeModal');
   const selectProgram = (sel, program) => {
     if (sel && program) [...sel.options].forEach((o) => { if (o.text.startsWith(program)) sel.value = o.value; });
@@ -172,6 +172,7 @@
     const st = $('.form-status', modal);
     if (st) { st.textContent = ''; st.className = 'form-status'; }
     modal.showModal();
+    modal.dispatchEvent(new Event('booking:open'));
     return true;
   };
   // /contact?program=P-01 pre-selects the program on the contact page
@@ -180,36 +181,12 @@
   document.addEventListener('click', (e) => {
     const t = e.target.closest('[data-open-modal]');
     if (!t || e.metaKey || e.ctrlKey || e.shiftKey) return;
-    if (location.pathname === '/contact') { e.preventDefault(); selectProgram($('#c-program'), t.dataset.program); $('#c-name')?.focus(); return; }
+    if (location.pathname === '/contact') { e.preventDefault(); selectProgram($('#c-program'), t.dataset.program); $('#c-booking')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
     closeAll(); header.classList.remove('menu-open');
     if (openModal(t.dataset.program)) e.preventDefault(); // otherwise follow the link to /contact
   });
   $$('[data-close-modal]').forEach((b) => b.addEventListener('click', () => modal.close()));
   modal?.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
-  /* ---------- Contact forms: fetch with inline status; plain POST still works without JS ---------- */
-  $$('form.contact-form').forEach((f) => {
-    const status = $('.form-status', f), btn = $('button[type="submit"]', f), label = $('.btn-label', f);
-    f.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!f.checkValidity()) { f.reportValidity(); return; }
-      btn.disabled = true; label.textContent = 'Sending…';
-      status.textContent = ''; status.className = 'form-status';
-      try {
-        const res = await fetch(f.action, {
-          method: 'POST',
-          body: new URLSearchParams(new FormData(f)),
-          headers: { 'X-Requested-With': 'fetch', Accept: 'application/json' },
-        });
-        const d = await res.json().catch(() => ({}));
-        if (res.ok && d.ok) { status.textContent = d.message; status.classList.add('is-ok'); f.reset(); }
-        else { status.textContent = d.message || 'Something went wrong. Please email business@incolosystems.com.'; status.classList.add('is-err'); }
-      } catch {
-        status.textContent = 'Network error. Please try again, or email business@incolosystems.com.'; status.classList.add('is-err');
-      } finally {
-        btn.disabled = false; label.textContent = 'Send enquiry';
-      }
-    });
-  });
   window.incoloOpenModal = openModal;
 
   /* ---------- Reveal on scroll ---------- */

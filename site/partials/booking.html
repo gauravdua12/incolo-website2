@@ -1,0 +1,82 @@
+<div class="booking modal-form" data-booking id="{{fid}}-booking">
+{{#close}}<button class="modal-close" type="button" data-close-modal aria-label="Close"><svg class="ic"><use href="/media/icons.svg#x"/></svg></button>{{/close}}
+        <ol class="bk-steps" aria-label="Booking steps">
+          <li class="on" data-step-label="pick"><span>1</span>Pick a time</li>
+          <li data-step-label="form"><span>2</span>Your details</li>
+          <li data-step-label="done"><span>3</span>Confirmed</li>
+        </ol>
+
+        <!-- Step 1: date + time -->
+        <section class="bk-step bk-pick" data-step="pick" aria-label="Pick a date and time">
+          <div class="bk-cal">
+            <div class="bk-cal-head">
+              <button type="button" class="bk-nav" data-month="-1" aria-label="Previous month"><svg class="ic-sm"><use href="/media/icons.svg#chevron-left"/></svg></button>
+              <strong class="bk-month" aria-live="polite">&nbsp;</strong>
+              <button type="button" class="bk-nav" data-month="1" aria-label="Next month"><svg class="ic-sm"><use href="/media/icons.svg#chevron-right"/></svg></button>
+            </div>
+            <div class="bk-dow" aria-hidden="true"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+            <div class="bk-grid" role="group" aria-label="Available dates"></div>
+          </div>
+          <div class="bk-times">
+            <p class="bk-times-title">Select a date to see times</p>
+            <div class="bk-slots" role="group" aria-label="Available times"></div>
+            <p class="bk-tz"></p>
+          </div>
+          <p class="bk-note" role="status" aria-live="polite">Loading available times…</p>
+        </section>
+
+        <!-- Step 2: details (all mandatory except phone + program) -->
+        <form class="bk-step bk-form" data-step="form" hidden novalidate>
+          <div class="bk-chosen">
+            <span class="icon-tile"><svg><use href="/media/icons.svg#calendar"/></svg></span>
+            <span><strong class="bk-chosen-label"></strong><small><span class="bk-duration">30</span>-minute Google Meet</small></span>
+            <button type="button" class="link-arrow bk-change">Change</button>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="{{fid}}-name">Full name <span class="req">*</span></label><input id="{{fid}}-name" name="name" autocomplete="name" maxlength="120" required /></div>
+            <div class="field"><label for="{{fid}}-email">Work email <span class="req">*</span></label><input id="{{fid}}-email" name="email" type="email" autocomplete="email" maxlength="254" required /></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="{{fid}}-company">Company name <span class="req">*</span></label><input id="{{fid}}-company" name="company" autocomplete="organization" maxlength="160" required /></div>
+            <div class="field"><label for="{{fid}}-designation">Designation <span class="req">*</span></label><input id="{{fid}}-designation" name="designation" autocomplete="organization-title" maxlength="120" required /></div>
+          </div>
+          <div class="field">
+            <label for="{{fid}}-challenge">What challenge are you facing? <span class="req">*</span></label>
+            <textarea id="{{fid}}-challenge" name="challenge" maxlength="3000" required></textarea>
+            <span class="help">Tell us about the line, asset or workflow, and your priority.</span>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="{{fid}}-phone">Phone <span class="opt">(optional)</span></label><input id="{{fid}}-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" /></div>
+            <div class="field">
+              <label for="{{fid}}-program">Program of interest <span class="opt">(optional)</span></label>
+              <select id="{{fid}}-program" name="program">
+                <option value="">Not sure yet</option>
+{{programOptions}}
+              </select>
+            </div>
+          </div>
+          <input type="hidden" name="start" />
+          <!-- Honeypot: hidden from people, catches bots. Do not fill. -->
+          <div class="hp" aria-hidden="true"><label for="{{fid}}-website">Leave this field empty</label><input id="{{fid}}-website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
+          <div class="form-foot">
+            <p class="fineprint">You'll get a calendar invite from business@incolosystems.com with the Google Meet link. We don't share your details or use third-party trackers.</p>
+            <button class="btn btn-primary btn-lg" type="submit"><span class="btn-label">Confirm booking</span></button>
+          </div>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <!-- Step 3: confirmation -->
+        <section class="bk-step bk-done" data-step="done" hidden tabindex="-1" aria-label="Booking confirmed">
+          <span class="bk-done-ic"><svg class="ic"><use href="/media/icons.svg#check"/></svg></span>
+          <h3 class="h3">You're booked.</h3>
+          <p class="bk-done-when"></p>
+          <p class="bk-done-msg"></p>
+          <div class="bk-done-meet"><span>Google Meet</span><a class="bk-meet-link" href="#" target="_blank" rel="noopener"></a></div>
+          <div class="hero-actions left">
+            <a class="btn btn-secondary btn-md bk-ics" href="#" download="incolo-scoping-call.ics"><svg class="ic-sm"><use href="/media/icons.svg#calendar"/></svg>Add to calendar</a>
+            <button type="button" class="btn btn-ghost btn-md bk-again">Book another time</button>
+          </div>
+        </section>
+
+        <noscript><p class="bk-note">Online booking needs JavaScript. Email <a href="mailto:business@incolosystems.com">business@incolosystems.com</a> or call <a href="tel:+919920323832">+91 99203 23832</a> and we'll set up the call.</p></noscript>
+      </div>

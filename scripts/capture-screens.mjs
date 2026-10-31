@@ -23,9 +23,11 @@ const send = (method, params = {}) => new Promise((res, rej) => {
 });
 try {
   let target;
-  for (let k = 0; k < 50 && !target; k++) {
-    try { target = (await (await fetch(`http://127.0.0.1:${PORT}/json/list`)).json()).find((t) => t.type === 'page'); } catch { await sleep(200); }
+  for (let k = 0; k < 100 && !target; k++) {
+    try { target = (await (await fetch(`http://127.0.0.1:${PORT}/json/list`)).json()).find((t) => t.type === 'page'); } catch { /* not up yet */ }
+    if (!target) await sleep(200);
   }
+  if (!target) throw new Error('Chrome did not start (no page target after 20 s)');
   ws = new WebSocket(target.webSocketDebuggerUrl);
   await new Promise((r) => ws.addEventListener('open', r));
   ws.addEventListener('message', (m) => {
@@ -34,13 +36,15 @@ try {
   });
   await send('Page.enable'); await send('Runtime.enable'); await send('Network.enable'); await send('Network.setCacheDisabled', { cacheDisabled: true });
   const evalJs = (expression) => send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true });
+  // Shot scripts run as an async function body, so they can use `await` (use `return` to log a value).
+  const runShot = (code) => evalJs(`(async () => { ${code} })()`);
 
   for (const s of shots) {
     const mobile = s.width < 768;
     await send('Emulation.setDeviceMetricsOverride', { width: s.width, height: s.height, deviceScaleFactor: s.scale || 1, mobile });
     await send('Page.navigate', { url: s.url });
     await sleep(1600);
-    if (s.js) { const r = await evalJs(s.js); if (s.log) console.log('eval', JSON.stringify(r.result.value)); await sleep(s.wait ?? 1400); }
+    if (s.js) { const r = await runShot(s.js); if (s.log) console.log('eval', JSON.stringify(r.result.value)); await sleep(s.wait ?? 1400); }
     let clip;
     if (s.full) {
       const h = (await evalJs('document.documentElement.scrollHeight')).result.value;

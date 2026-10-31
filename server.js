@@ -1,11 +1,12 @@
 /**
  * Incolo Systems 2.0 — Node.js server.
  *
- * Serves the built site (dist/, from `npm run build`) with clean URLs and handles
- * the contact form. Designed to sit behind nginx (which terminates TLS) on an OCI VM,
- * but also runs stand-alone for local testing.
+ * Serves the built site (dist/, from `npm run build`) with clean URLs, the contact form,
+ * scoping-call booking (/api/slots, /api/book → Google Calendar + Meet, invite emailed from
+ * business@) and the owner's /admin area. Designed to sit behind nginx (which terminates
+ * TLS) on an OCI VM, but also runs stand-alone for local testing.
  *
- * No third-party runtime calls except the SMTP relay used to send enquiry email.
+ * Outbound calls: the SMTP relay, and Google's Calendar API for bookings. Nothing else.
  * All configuration and secrets come from environment variables (see .env.example).
  */
 
@@ -17,6 +18,10 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const nodemailer = require('nodemailer');
+const { bookingRouter } = require('./lib/booking/routes');
+const { adminRouter } = require('./lib/admin/routes');
+const google = require('./lib/booking/google');
+const adminAuth = require('./lib/admin/auth');
 
 const app = express();
 const DIST = path.join(__dirname, 'dist');
@@ -61,6 +66,7 @@ const transporter = SMTP_HOST
     })
   : null;
 if (!transporter) console.warn('SMTP_HOST not set: enquiries will be saved to the leads file only.');
+console.log('booking calendar: ' + google.mode() + ' · admin: ' + (adminAuth.enabled() ? 'enabled' : 'disabled (set ADMIN_PASSWORD_HASH + ADMIN_SESSION_SECRET)'));
 
 // ---------------------------------------------------------------- security headers
 // Everything is self-hosted, so the policy can be strict: no third-party origins at all.
@@ -111,18 +117,22 @@ function respond(req, res, ok, message, code) {
   );
 }
 
-const hits = new Map(); // ip -> [timestamps]
-function rateLimited(ip) {
-  const now = Date.now();
-  const recent = (hits.get(ip) || []).filter(function (t) { return now - t < RATE_WINDOW_MS; });
-  recent.push(now);
-  hits.set(ip, recent);
-  return recent.length > RATE_MAX;
+// Per-IP sliding-window limiter: returns true once `max` hits in `windowMs` are exceeded.
+function makeLimiter(max, windowMs) {
+  const hits = new Map(); // ip -> [timestamps]
+  setInterval(function () {
+    const now = Date.now();
+    for (const [ip, ts] of hits) if (ts.every(function (t) { return now - t >= windowMs; })) hits.delete(ip);
+  }, 10 * 60 * 1000).unref();
+  return function (ip) {
+    const now = Date.now();
+    const recent = (hits.get(ip) || []).filter(function (t) { return now - t < windowMs; });
+    recent.push(now);
+    hits.set(ip, recent);
+    return recent.length > max;
+  };
 }
-setInterval(function () {
-  const now = Date.now();
-  for (const [ip, ts] of hits) if (ts.every(function (t) { return now - t >= RATE_WINDOW_MS; })) hits.delete(ip);
-}, 10 * 60 * 1000).unref();
+const rateLimited = makeLimiter(RATE_MAX, RATE_WINDOW_MS);
 
 const clip = function (v, max) { return String(v || '').trim().slice(0, max); };
 
@@ -210,6 +220,11 @@ app.post(
 );
 
 app.get('/healthz', function (req, res) { res.type('text').send('ok'); });
+
+// ---------------------------------------------------------------- booking + admin
+app.use(bookingRouter({ transporter: transporter, rateLimit: makeLimiter(5, 60 * 60 * 1000) }));
+app.use(adminRouter({ smtpConfigured: Boolean(transporter), loginRateLimit: makeLimiter(5, 15 * 60 * 1000) }));
+app.use('/admin', function (req, res, next) { res.setHeader('X-Robots-Tag', 'noindex, nofollow'); next(); });
 
 // ---------------------------------------------------------------- static site
 function cacheHeaders(res, filePath) {

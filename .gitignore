@@ -4,3 +4,6 @@ dist/
 .env
 leads.jsonl
 *.zip
+booking-settings.json
+bookings.jsonl
+outbox/

@@ -1,0 +1,9 @@
+[
+ { "name": "1-contact-pick", "url": "http://127.0.0.1:4100/contact", "width": 1440, "height": 900, "wait": 1200 },
+ { "name": "2-contact-details", "url": "http://127.0.0.1:4100/contact", "width": 1440, "height": 900, "js": "await new Promise(r=>setTimeout(r,600)); document.querySelectorAll('#c-booking .bk-slot')[3].click()", "wait": 600 },
+ { "name": "3-contact-done", "url": "http://127.0.0.1:4100/contact", "width": 1440, "height": 900, "js": "await new Promise(r=>setTimeout(r,600)); document.querySelectorAll('#c-booking .bk-slot')[4].click(); const f=document.querySelector('#c-booking form'); f.name.value='Asha Rao'; f.email.value='asha@example.com'; f.company.value='Acme Pumps'; f.designation.value='Plant Head'; f.challenge.value='Escaped defects on line 2'; f.querySelector('[type=submit]').click()", "wait": 1800 },
+ { "name": "4-dialog-pick", "url": "http://127.0.0.1:4100/", "width": 1440, "height": 900, "js": "document.querySelector('.hero [data-open-modal]').click()", "wait": 1400 },
+ { "name": "5-admin-login", "url": "http://127.0.0.1:4100/admin", "width": 1440, "height": 900, "wait": 800 },
+ { "name": "6-admin-dash", "url": "http://127.0.0.1:4100/admin", "width": 1440, "height": 900, "js": "await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:'test-password-123'})}); location.reload()", "wait": 2200, "full": true },
+ { "name": "7-mobile-contact", "url": "http://127.0.0.1:4100/contact", "width": 390, "height": 844, "scale": 2, "js": "await new Promise(r=>setTimeout(r,600)); document.querySelector('#c-booking').scrollIntoView()", "wait": 800 }
+]

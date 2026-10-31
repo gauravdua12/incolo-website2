@@ -1,0 +1,102 @@
+<!--page {"title":"Admin | Incolo Systems","description":"Site owner settings.","noindex":true,"path":"/admin","bare":true,"scripts":["admin"]} -->
+  <div class="admin-body">
+    <header class="admin-top">
+      <div class="container">
+        <a class="brand" href="/"><img src="/media/logo-mark.png" width="105" height="120" alt="" /><span>Incolo Systems · Admin</span></a>
+        <button class="btn btn-secondary" id="logout" type="button" hidden>Sign out</button>
+      </div>
+    </header>
+
+    <main id="main" class="admin-main">
+      <!-- Sign in -->
+      <section class="admin-card admin-login" id="loginCard" hidden>
+        <h2>Sign in</h2>
+        <p class="muted">Owner access to scoping-call settings.</p>
+        <form id="loginForm" novalidate>
+          <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required /></div>
+          <button class="btn btn-primary btn-md" type="submit">Sign in</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="admin-card" id="disabledCard" hidden>
+        <h2>Admin isn't set up on this server</h2>
+        <p class="muted">Run <code>npm run admin-password</code>, add the two printed lines to <code>.env</code>, then restart the site. See docs/BOOKING-SETUP.md.</p>
+      </section>
+
+      <!-- Dashboard -->
+      <div id="dash" hidden>
+        <section class="admin-card">
+          <h2>Status</h2>
+          <div class="status-row" id="statusRow"></div>
+          <div class="admin-actions">
+            <button class="btn btn-secondary" id="testGoogle" type="button">Test Google connection</button>
+            <span class="form-status" id="testStatus" role="status" aria-live="polite"></span>
+          </div>
+          <p class="admin-files" id="files"></p>
+        </section>
+
+        <form class="admin-card" id="settingsForm" novalidate>
+          <h2>Scoping-call settings</h2>
+          <p class="muted">Changes apply to the booking calendar immediately. No restart needed.</p>
+
+          <div class="field">
+            <label for="invitees">Invitees (one email per line)</label>
+            <textarea id="invitees" name="invitees" spellcheck="false"></textarea>
+            <span class="help">Every booking invites the customer plus these people. The organizer always gets a copy too.</span>
+          </div>
+
+          <div class="admin-grid">
+            <div class="field"><label for="organizerName">Organizer name</label><input id="organizerName" name="organizerName" required /></div>
+            <div class="field"><label for="organizerEmail">Organizer email (sends the invite)</label><input id="organizerEmail" name="organizerEmail" type="email" required /></div>
+          </div>
+
+          <div class="field">
+            <label>Working days</label>
+            <div class="days" id="workDays">
+              <label><input type="checkbox" value="1" />Mon</label><label><input type="checkbox" value="2" />Tue</label>
+              <label><input type="checkbox" value="3" />Wed</label><label><input type="checkbox" value="4" />Thu</label>
+              <label><input type="checkbox" value="5" />Fri</label><label><input type="checkbox" value="6" />Sat</label>
+              <label><input type="checkbox" value="7" />Sun</label>
+            </div>
+          </div>
+
+          <div class="admin-grid">
+            <div class="field"><label for="startTime">Day starts</label><input id="startTime" name="startTime" type="time" required /></div>
+            <div class="field"><label for="endTime">Day ends</label><input id="endTime" name="endTime" type="time" required /></div>
+            <div class="field"><label for="timezone">Timezone</label><input id="timezone" name="timezone" required /></div>
+            <div class="field">
+              <label for="slotMinutes">Call length</label>
+              <select id="slotMinutes" name="slotMinutes"><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option><option value="90">90 minutes</option></select>
+            </div>
+            <div class="field"><label for="bufferMinutes">Gap between calls (min)</label><input id="bufferMinutes" name="bufferMinutes" type="number" min="0" max="120" required /></div>
+            <div class="field"><label for="minNoticeHours">Minimum notice (hours)</label><input id="minNoticeHours" name="minNoticeHours" type="number" min="0" max="720" required /></div>
+            <div class="field"><label for="windowDays">Bookable days ahead</label><input id="windowDays" name="windowDays" type="number" min="1" max="90" required /></div>
+          </div>
+
+          <div class="field">
+            <label for="blackoutDates">Holidays / blocked dates (YYYY-MM-DD, one per line)</label>
+            <textarea id="blackoutDates" name="blackoutDates" spellcheck="false" placeholder="2026-11-08"></textarea>
+            <span class="help">Busy times in the business@ Google Calendar are blocked automatically. Use this for whole days off.</span>
+          </div>
+
+          <div class="field"><label for="meetingTitle">Invite title (use {company} or {name})</label><input id="meetingTitle" name="meetingTitle" required /></div>
+          <div class="field"><label for="meetingNote">Note in the invite</label><textarea id="meetingNote" name="meetingNote"></textarea></div>
+
+          <div class="admin-actions">
+            <button class="btn btn-primary btn-md" type="submit">Save settings</button>
+            <span class="form-status" id="saveStatus" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+
+        <section class="admin-card">
+          <h2>Upcoming bookings</h2>
+          <p class="muted" id="bookingsEmpty">No upcoming bookings.</p>
+          <div class="bk-table-wrap"><table class="bk-table" id="bookings" hidden>
+            <thead><tr><th>When</th><th>Who</th><th>Challenge</th><th>Meet</th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+        </section>
+      </div>
+    </main>
+  </div>

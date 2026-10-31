@@ -843,6 +843,93 @@ dialog.modal[open] { animation: pop .28s var(--ease-out); }
   .contact-card .modal-form { padding: 24px; }
 }
 
+/* ==========================================================================
+   Scoping-call booking widget (dialog + /contact)
+   ========================================================================== */
+.bk-steps { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 40px 22px 0; padding: 0; list-style: none; font-size: 13px; font-weight: 500; color: var(--text-faint); }
+.bk-steps li { display: inline-flex; align-items: center; gap: 8px; }
+.bk-steps li span { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-tint); border: 1px solid var(--border); font-size: 12px; }
+.bk-steps li.on { color: var(--text-strong); }
+.bk-steps li.on span { background: var(--accent); border-color: var(--accent); color: #fff; }
+.bk-steps li.done span { background: var(--accent-softer); border-color: var(--accent-soft); color: var(--accent); }
+.bk-pick { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 24px; }
+.bk-pick[hidden], .bk-form[hidden], .bk-done[hidden] { display: none; }
+.bk-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.bk-month { font-size: 15px; font-weight: 500; }
+.bk-nav { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--border-strong); border-radius: 8px; background: #fff; color: var(--text-strong); }
+.bk-nav:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.bk-nav:disabled { opacity: .35; cursor: default; }
+.bk-dow, .bk-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.bk-dow span { text-align: center; font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--text-faint); padding-bottom: 6px; }
+.bk-day { min-width: 0; aspect-ratio: 1; display: grid; place-items: center; border-radius: 8px; font-size: 14px; color: var(--text-faint); border: 0; background: none; }
+.bk-day.avail { background: var(--accent-softer); color: var(--accent); font-weight: 600; cursor: pointer; }
+.bk-day.avail:hover { background: var(--accent-soft); }
+.bk-day.sel, .bk-day.sel:hover { background: var(--accent); color: #fff; }
+.bk-times-title { font-size: 14px; font-weight: 500; color: var(--text-strong); margin: 6px 0 12px; }
+.bk-slots { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; padding-right: 2px; }
+.bk-slot { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 44px; padding: 6px 10px; border: 1px solid var(--border-strong); border-radius: 8px; background: #fff; font-size: 15px; font-weight: 500; color: var(--text-strong); }
+.bk-slot small { font-size: 11.5px; font-weight: 400; color: var(--text-faint); }
+.bk-slot:hover { border-color: var(--accent); color: var(--accent); }
+.bk-tz { margin-top: 12px; font-size: 12px; line-height: 17px; color: var(--text-faint); }
+.bk-note { grid-column: 1 / -1; font-size: 14px; line-height: 21px; color: var(--text-muted); }
+.bk-note.is-err { padding: 12px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); }
+.bk-note a, .bk-done-msg a { color: var(--accent); }
+.bk-chosen { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; }
+.bk-chosen strong { display: block; font-size: 15px; font-weight: 500; }
+.bk-chosen small { display: block; font-size: 12.5px; color: var(--text-muted); }
+.bk-change { margin-left: auto; border: 0; background: none; }
+.field .opt { font-weight: 400; color: var(--text-faint); font-size: 12px; }
+.bk-done { outline: none; }
+.bk-done-ic { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--data-soft); color: var(--data); }
+.bk-done-ic svg { width: 24px; height: 24px; stroke-width: 2.4; }
+.bk-done .h3 { margin: 16px 0 6px; font-size: 24px; line-height: 30px; font-weight: 400; letter-spacing: -0.02em; }
+.bk-done-when { font-size: 16px; font-weight: 500; color: var(--text-strong); }
+.bk-done-msg { margin-top: 8px; font-size: 14px; line-height: 21px; color: var(--text-muted); }
+.bk-done-meet { display: flex; flex-direction: column; gap: 2px; margin-top: 16px; padding: 12px 14px; background: var(--accent-softer); border: 1px solid var(--accent-soft); border-radius: 8px; }
+.bk-done-meet span { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.bk-done-meet a { font-size: 15px; font-weight: 500; color: var(--accent-press); word-break: break-all; }
+.bk-done .hero-actions { margin-top: 20px; }
+.bk-points { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+.bk-points li { display: flex; gap: 10px; align-items: center; font-size: 14px; color: var(--text); }
+.bk-points svg { color: var(--data); }
+@media (max-width: 640px) {
+  .bk-pick { grid-template-columns: 1fr; }
+  .bk-slots { flex-direction: row; flex-wrap: wrap; max-height: none; }
+  .bk-slot { flex: 1 1 30%; }
+}
+
+/* ==========================================================================
+   Admin (/admin) — owner-only settings page
+   ========================================================================== */
+.admin-body { background: var(--bg); min-height: 100vh; }
+.admin-top { background: #fff; border-bottom: 1px solid var(--border); }
+.admin-top .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.admin-main { max-width: 1040px; margin: 0 auto; padding: 32px var(--gutter) 80px; }
+.admin-card { background: #fff; border: 1px solid var(--border); border-radius: var(--r-card); padding: 28px; margin-bottom: 20px; }
+.admin-card h2 { font-size: 20px; line-height: 26px; font-weight: 500; margin-bottom: 4px; }
+.admin-card > p.muted { font-size: 14px; margin-bottom: 20px; }
+.admin-login { max-width: 420px; margin: 72px auto; }
+.admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0 20px; }
+.admin-card textarea { height: 96px; font-family: var(--font-mono); font-size: 13px; }
+.days { display: flex; flex-wrap: wrap; gap: 8px; }
+.days label { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 8px; font-size: 14px; cursor: pointer; }
+.days input { accent-color: var(--accent); }
+.status-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.pill-status { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: var(--r-pill); font-size: 13px; font-weight: 500; background: var(--surface-tint); color: var(--text-muted); }
+.pill-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--text-faint); }
+.pill-status.ok { background: var(--data-soft); color: #0b6e63; }
+.pill-status.ok::before { background: var(--data); }
+.pill-status.warn { background: #fdf3e2; color: #8a5a00; }
+.pill-status.warn::before { background: #d08a00; }
+.admin-files { font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); }
+.admin-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.bk-table-wrap { overflow-x: auto; }
+.bk-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.bk-table th { text-align: left; font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint); padding: 0 12px 10px 0; border-bottom: 1px solid var(--border); }
+.bk-table td { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+.bk-table td small { display: block; color: var(--text-faint); }
+.bk-table a { color: var(--accent); }
+
 /* ---------- Reveal on scroll ---------- */
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s var(--ease-out), transform .7s var(--ease-out); }
 .reveal.in { opacity: 1; transform: none; }

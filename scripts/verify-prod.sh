@@ -41,6 +41,12 @@ echo "Indexing files"
 curl -s -m 15 "$BASE/robots.txt" | grep -q '^Sitemap: ' && ok 'robots.txt lists the sitemap' || bad 'robots.txt has no Sitemap line'
 n=$(curl -s -m 15 "$BASE/sitemap.xml" | grep -c '<loc>'); [ "$n" -ge 13 ] && ok "sitemap.xml has $n URLs" || bad "sitemap.xml has $n URLs (expected ≥ 13)"
 
+echo "Booking"
+SL=$(curl -s -m 20 "$BASE/api/slots")
+printf '%s' "$SL" | grep -q '"ok":true' && ok "/api/slots returns open times ($(printf '%s' "$SL" | grep -o '"slotMinutes":[0-9]*' | cut -d: -f2)-min calls)" || bad "/api/slots: $(printf '%s' "$SL" | head -c 120) (see docs/BOOKING-SETUP.md)"
+c=$(code "$BASE/admin"); [ "$c" = 200 ] && ok "/admin 200" || bad "/admin → $c"
+curl -s -m 15 "$BASE/robots.txt" | grep -q '^Disallow: /admin' && ok 'robots.txt hides /admin' || bad 'robots.txt does not hide /admin'
+
 echo "OG image (the one the homepage advertises)"
 OG=$(printf '%s' "$HOME_HTML" | grep -o 'property="og:image" content="[^"]*"' | head -1 | sed 's/.*content="//; s/"$//')
 OG_PATH="/${OG#*://*/}"   # fetch from $BASE so this also works before DNS/cutover

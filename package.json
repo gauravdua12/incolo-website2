@@ -10,7 +10,10 @@
     "dev": "node scripts/dev.mjs",
     "screens": "node scripts/capture-screens.mjs docs/mockups/build scripts/shots/build-pages.json",
     "verify": "bash scripts/verify-prod.sh",
-    "og": "sed \"s#__ROOT__#$PWD#\" scripts/og/shot.json > /tmp/og-shot.json && node scripts/capture-screens.mjs /tmp/og-out /tmp/og-shot.json && python3 scripts/og/finish.py /tmp/og-out/og-image-v3.png site/media/og-image-v3.jpg"
+    "og": "sed \"s#__ROOT__#$PWD#\" scripts/og/shot.json > /tmp/og-shot.json && node scripts/capture-screens.mjs /tmp/og-out /tmp/og-shot.json && python3 scripts/og/finish.py /tmp/og-out/og-image-v3.png site/media/og-image-v3.jpg",
+    "test": "node --test \"test/*.test.js\"",
+    "google-auth": "node scripts/google-auth.mjs",
+    "admin-password": "node scripts/admin-password.mjs"
   },
   "engines": {
     "node": ">=20"
