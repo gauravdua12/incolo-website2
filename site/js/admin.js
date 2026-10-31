@@ -21,6 +21,7 @@
   function fill(s) {
     current = s;
     form.invitees.value = s.invitees.join('\n');
+    form.bcc.value = s.bcc.join('\n');
     form.blackoutDates.value = s.blackoutDates.join('\n');
     for (const k of ['organizerName', 'organizerEmail', 'startTime', 'endTime', 'timezone', 'bufferMinutes', 'minNoticeHours', 'windowDays', 'meetingTitle', 'meetingNote']) form[k].value = s[k];
     if (![...form.slotMinutes.options].some((o) => o.value === String(s.slotMinutes))) form.slotMinutes.add(new Option(`${s.slotMinutes} minutes`, s.slotMinutes));
@@ -33,6 +34,7 @@
     return {
       ...current,
       invitees: lines(form.invitees.value),
+      bcc: lines(form.bcc.value),
       blackoutDates: lines(form.blackoutDates.value),
       organizerName: form.organizerName.value.trim(),
       organizerEmail: form.organizerEmail.value.trim(),

@@ -6,7 +6,7 @@
  *   (or put both in .env first)
  *
  * Opens a local page on http://127.0.0.1:8765, sends you to Google's consent screen
- * (sign in as business@incolosystems.com), then prints GOOGLE_REFRESH_TOKEN to paste
+ * (sign in as success@incolosystems.com), then prints GOOGLE_REFRESH_TOKEN to paste
  * into the server's .env. Run it on your Mac; the token works anywhere.
  * See docs/BOOKING-SETUP.md for creating the OAuth client.
  */
@@ -36,7 +36,7 @@ const state = randomBytes(16).toString('hex');
 
 const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth?' + new URLSearchParams({
   client_id: CLIENT_ID, redirect_uri: REDIRECT, response_type: 'code', scope: SCOPES,
-  access_type: 'offline', prompt: 'consent', state, login_hint: 'business@incolosystems.com',
+  access_type: 'offline', prompt: 'consent', state, login_hint: 'success@incolosystems.com',
 });
 
 const server = createServer(async (req, res) => {
@@ -63,5 +63,5 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  console.log(`Open this link and sign in as business@incolosystems.com:\n\n  http://127.0.0.1:${PORT}/\n`);
+  console.log(`Open this link and sign in as success@incolosystems.com:\n\n  http://127.0.0.1:${PORT}/\n`);
 });

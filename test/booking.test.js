@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const { zonedToUtc, dateKey, isoWeekday, label } = require('../lib/booking/time');
 const { computeSlots } = require('../lib/booking/slots');
 const { validate, DEFAULTS } = require('../lib/booking/settings');
-const { buildIcs, fold } = require('../lib/booking/invite');
+const { buildIcs, fold, message } = require('../lib/booking/invite');
 
 const S = { ...DEFAULTS };
 const iso = (ms) => new Date(ms).toISOString();
@@ -64,6 +64,22 @@ test('settings validation', () => {
   assert.deepEqual(norm.settings.invitees, ['a@x.com']);
   assert.deepEqual(norm.settings.workDays, [2]);
   assert.equal('extra' in norm.settings, false);
+  const bcc = validate({ invitees: ['a@x.com'], bcc: ['A@x.com', 'b@x.com', 'success@incolosystems.com'] });
+  assert.deepEqual(bcc.settings.bcc, ['b@x.com'], 'bcc drops invitees and the organizer');
+  assert.equal(validate({ bcc: ['nope'] }).ok, false);
+});
+
+test('invite: From is the sender name, Bcc copies are hidden from the guest list', () => {
+  const { mail, ics, attendees, bcc } = message({
+    booking: { name: 'Asha', email: 'asha@acme.com', company: 'Acme', designation: 'COO', challenge: 'Scrap', startMs: Date.parse('2026-11-03T05:30:00Z'), endMs: Date.parse('2026-11-03T06:00:00Z') },
+    settings: S, event: { iCalUID: 'u@google.com', meetLink: 'https://meet.google.com/abc-defg-hij' }, summary: 'Call', description: 'd',
+  });
+  assert.deepEqual(mail.from, { name: 'Gaurav Dua', address: 'success@incolosystems.com' });
+  assert.deepEqual(mail.bcc, ['theedivesh@gmail.com']);
+  assert.deepEqual(bcc, ['theedivesh@gmail.com']);
+  assert.deepEqual(attendees.map((a) => a.email), ['asha@acme.com', 'success@incolosystems.com']);
+  assert.ok(!JSON.stringify(mail.to).includes('theedivesh') && !ics.includes('theedivesh'));
+  assert.ok(ics.includes('ORGANIZER;CN=Gaurav Dua:mailto:success@incolosystems.com'));
 });
 
 test('ics: structure, escaping, CRLF and folding', () => {

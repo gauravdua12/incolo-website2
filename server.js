@@ -3,7 +3,7 @@
  *
  * Serves the built site (dist/, from `npm run build`) with clean URLs, the contact form,
  * scoping-call booking (/api/slots, /api/book → Google Calendar + Meet, invite emailed from
- * business@) and the owner's /admin area. Designed to sit behind nginx (which terminates
+ * success@) and the owner's /admin area. Designed to sit behind nginx (which terminates
  * TLS) on an OCI VM, but also runs stand-alone for local testing.
  *
  * Outbound calls: the SMTP relay, and Google's Calendar API for bookings. Nothing else.

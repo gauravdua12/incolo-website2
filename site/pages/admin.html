@@ -43,11 +43,17 @@
           <div class="field">
             <label for="invitees">Invitees (one email per line)</label>
             <textarea id="invitees" name="invitees" spellcheck="false"></textarea>
-            <span class="help">Every booking invites the customer plus these people. The organizer always gets a copy too.</span>
+            <span class="help">Every booking invites the customer plus these people, and they're listed on the invite. The organizer is always included.</span>
+          </div>
+
+          <div class="field">
+            <label for="bcc">Hidden copies / Bcc (one email per line)</label>
+            <textarea id="bcc" name="bcc" spellcheck="false"></textarea>
+            <span class="help">Get the invitation email (Bcc) and the event in their Google Calendar, but the customer never sees them on the guest list.</span>
           </div>
 
           <div class="admin-grid">
-            <div class="field"><label for="organizerName">Organizer name</label><input id="organizerName" name="organizerName" required /></div>
+            <div class="field"><label for="organizerName">Sender name (shown as From)</label><input id="organizerName" name="organizerName" required /></div>
             <div class="field"><label for="organizerEmail">Organizer email (sends the invite)</label><input id="organizerEmail" name="organizerEmail" type="email" required /></div>
           </div>
 
@@ -77,7 +83,7 @@
           <div class="field">
             <label for="blackoutDates">Holidays / blocked dates (YYYY-MM-DD, one per line)</label>
             <textarea id="blackoutDates" name="blackoutDates" spellcheck="false" placeholder="2026-11-08"></textarea>
-            <span class="help">Busy times in the business@ Google Calendar are blocked automatically. Use this for whole days off.</span>
+            <span class="help">Busy times in the organizer's Google Calendar are blocked automatically. Use this for whole days off.</span>
           </div>
 
           <div class="field"><label for="meetingTitle">Invite title (use {company} or {name})</label><input id="meetingTitle" name="meetingTitle" required /></div>

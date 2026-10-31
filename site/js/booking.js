@@ -80,6 +80,10 @@
       try {
         data = await loadSlots(force);
         $$('.bk-duration').forEach((el) => { el.textContent = data.slotMinutes; });
+        if (data.organizer) {
+          $$('[data-bk-organizer]').forEach((el) => { el.textContent = `${data.organizer.name} (${data.organizer.email})`; });
+          $$('[data-bk-organizer-email]').forEach((el) => { el.textContent = data.organizer.email; });
+        }
         const tzName = data.timezone === 'Asia/Kolkata' ? 'IST (India)' : data.timezone;
         tzEl.textContent = `Times in ${tzName}${data.days.length && !sameOffset(data.timezone, data.days[0].slots[0]) ? ', with your local time below' : ''}.`;
         if (!data.days.length) { note.textContent = 'No times are open right now. Please email business@incolosystems.com and we will find one.'; grid.innerHTML = ''; return; }

@@ -564,6 +564,16 @@ dialog.modal[open] { animation: pop .28s var(--ease-out); }
 .crumbs span[aria-current] { color: var(--text-strong); }
 .page-hero .h1 { font-size: 52px; line-height: 56px; max-width: 760px; margin-top: 14px; }
 .page-hero .lede { max-width: 680px; margin-top: 18px; }
+
+/* Long-form text (privacy policy) */
+.prose { max-width: 760px; font-size: 17px; line-height: 28px; color: var(--text-muted); }
+.section-prose { padding-top: 64px; }
+.prose h2 { font-size: 24px; line-height: 32px; font-weight: 500; color: var(--text-strong); margin: 40px 0 12px; }
+.prose p, .prose ul { margin: 0 0 14px; }
+.prose ul { padding-left: 22px; list-style: disc; }
+.prose li { margin-bottom: 8px; }
+.prose strong { color: var(--text); font-weight: 600; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .searchbar { display: flex; gap: 8px; max-width: 760px; margin-top: 32px; }
 .search-input { flex: 1; position: relative; }
 .search-input svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--text-faint); stroke-width: 2; }
