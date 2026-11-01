@@ -58,6 +58,12 @@
           </div>
 
           <div class="field">
+            <label>Time slots by region</label>
+            <div class="slot-groups" id="slotGroups"></div>
+            <span class="help">Fixed start times, each in that region's own timezone. Visitors see their region's times first and can switch. Every call must fit inside 09:00–22:00 IST; times outside it are refused when you save.</span>
+          </div>
+
+          <div class="field">
             <label>Working days</label>
             <div class="days" id="workDays">
               <label><input type="checkbox" value="1" />Mon</label><label><input type="checkbox" value="2" />Tue</label>
@@ -68,9 +74,7 @@
           </div>
 
           <div class="admin-grid">
-            <div class="field"><label for="startTime">Day starts</label><input id="startTime" name="startTime" type="time" required /></div>
-            <div class="field"><label for="endTime">Day ends</label><input id="endTime" name="endTime" type="time" required /></div>
-            <div class="field"><label for="timezone">Timezone</label><input id="timezone" name="timezone" required /></div>
+            <div class="field"><label for="timezone">Your timezone (dates, admin and emails)</label><input id="timezone" name="timezone" required /></div>
             <div class="field">
               <label for="slotMinutes">Call length</label>
               <select id="slotMinutes" name="slotMinutes"><option value="15">15 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option><option value="90">90 minutes</option></select>

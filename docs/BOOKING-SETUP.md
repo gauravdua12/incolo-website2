@@ -128,11 +128,26 @@ The log should include `booking calendar: google · admin: enabled`.
 
 ---
 
+## Time slots by region
+
+The calendar offers a few fixed 45-minute slots a day rather than every free half hour. Each region's times are set in that region's own timezone:
+
+| Region (visitors see) | Times | In IST: winter (Nov–Mar) | In IST: summer (Apr–Oct) | Their local time |
+|---|---|---|---|---|
+| India & Middle East | 11:30, 14:30, 17:00 IST | 11:30, 14:30, 17:00 | same | Dubai/Muscat 10:00, 13:00, 15:30 · Riyadh/Doha/Kuwait/Bahrain 09:00, 12:00, 14:30 |
+| Europe & UK | 10:00, 14:30 CET | 14:30, 19:00 | 13:30, 18:00 | London 09:00, 13:30 |
+
+- Which times a visitor sees first depends on their browser's timezone: Europe, and anywhere west of UTC+3 (Africa, the Americas), gets **Europe & UK**; India, the Gulf and the rest of Asia get **India & Middle East**. Visitors can switch with the buttons above the calendar.
+- In winter, 10:00 CET and 14:30 IST are the same moment, so it's one slot: booking it from either region takes it for both.
+- No call can start before 09:00 IST or end after 22:00 IST. This limit is built into the code: `/admin` refuses times outside it (checked for both summer and winter time), and the calendar skips them anyway.
+- Change the times in `/admin` → **Time slots by region**. Start times in a region must be at least one call length apart.
+- Working days apply to the IST date. Saudi Arabia, Qatar and Kuwait don't work on Fridays and the UAE works a half day; tick or untick days to suit.
+
 ## Day-to-day
 
 | Task | Where |
 |---|---|
-| Change invitees, Bcc copies, sender name, hours, call length, notice, holidays | `/admin` → Scoping-call settings → Save (applies immediately) |
+| Change invitees, Bcc copies, sender name, slot times, call length, notice, holidays | `/admin` → Scoping-call settings → Save (applies immediately) |
 | Block a time | Add anything to success@'s Google Calendar |
 | See upcoming bookings | `/admin`, or success@'s Google Calendar |
 | Cancel a meeting | `/admin` → Upcoming bookings → **Cancel**. Add an optional message and click **Cancel meeting**. It deletes the Google event and Meet link, emails the cancellation from success@ to the customer and the same guests (Bcc copies too) so it disappears from their calendars, and opens the slot on the website again. Untick the email option to cancel silently. |

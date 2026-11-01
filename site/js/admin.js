@@ -23,7 +23,15 @@
     form.invitees.value = s.invitees.join('\n');
     form.bcc.value = s.bcc.join('\n');
     form.blackoutDates.value = s.blackoutDates.join('\n');
-    for (const k of ['organizerName', 'organizerEmail', 'startTime', 'endTime', 'timezone', 'bufferMinutes', 'minNoticeHours', 'windowDays', 'meetingTitle', 'meetingNote']) form[k].value = s[k];
+    $('#slotGroups').innerHTML = s.slotGroups.map((g) => `<fieldset class="slot-group" data-id="${esc(g.id)}">
+      <legend>${esc(g.label)}</legend>
+      <div class="admin-grid">
+        <div class="field"><label for="sg-${esc(g.id)}-label">Shown to visitors as</label><input id="sg-${esc(g.id)}-label" data-k="label" value="${esc(g.label)}" required /></div>
+        <div class="field"><label for="sg-${esc(g.id)}-timezone">Timezone of these times</label><input id="sg-${esc(g.id)}-timezone" data-k="timezone" value="${esc(g.timezone)}" required /></div>
+        <div class="field"><label for="sg-${esc(g.id)}-times">Start times (HH:MM, comma-separated)</label><input id="sg-${esc(g.id)}-times" data-k="times" value="${esc(g.times.join(', '))}" spellcheck="false" required /></div>
+      </div>
+    </fieldset>`).join('');
+    for (const k of ['organizerName', 'organizerEmail', 'timezone', 'bufferMinutes', 'minNoticeHours', 'windowDays', 'meetingTitle', 'meetingNote']) form[k].value = s[k];
     if (![...form.slotMinutes.options].some((o) => o.value === String(s.slotMinutes))) form.slotMinutes.add(new Option(`${s.slotMinutes} minutes`, s.slotMinutes));
     form.slotMinutes.value = String(s.slotMinutes);
     $$('#workDays input').forEach((c) => { c.checked = s.workDays.includes(Number(c.value)); });
@@ -39,8 +47,12 @@
       organizerName: form.organizerName.value.trim(),
       organizerEmail: form.organizerEmail.value.trim(),
       workDays: $$('#workDays input:checked').map((c) => Number(c.value)),
-      startTime: form.startTime.value,
-      endTime: form.endTime.value,
+      slotGroups: $$('#slotGroups .slot-group').map((fs) => ({
+        id: fs.dataset.id,
+        label: $('[data-k="label"]', fs).value.trim(),
+        timezone: $('[data-k="timezone"]', fs).value.trim(),
+        times: lines($('[data-k="times"]', fs).value),
+      })),
       timezone: form.timezone.value.trim(),
       slotMinutes: Number(form.slotMinutes.value),
       bufferMinutes: Number(form.bufferMinutes.value),

@@ -864,6 +864,12 @@ dialog.modal[open] { animation: pop .28s var(--ease-out); }
 .bk-steps li.done span { background: var(--accent-softer); border-color: var(--accent-soft); color: var(--accent); }
 .bk-pick { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 24px; }
 .bk-pick[hidden], .bk-form[hidden], .bk-done[hidden] { display: none; }
+.bk-region { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; color: var(--text-faint); }
+.bk-region[hidden] { display: none; }
+.bk-region span { margin-right: 2px; }
+.bk-region-btn { min-height: 34px; padding: 6px 14px; border: 1px solid var(--border-strong); border-radius: 999px; background: #fff; font-size: 13px; font-weight: 500; color: var(--text-strong); }
+.bk-region-btn:hover { border-color: var(--accent); color: var(--accent); }
+.bk-region-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
 .bk-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .bk-month { font-size: 15px; font-weight: 500; }
 .bk-nav { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--border-strong); border-radius: 8px; background: #fff; color: var(--text-strong); }
@@ -920,6 +926,9 @@ dialog.modal[open] { animation: pop .28s var(--ease-out); }
 .admin-card > p.muted { font-size: 14px; margin-bottom: 20px; }
 .admin-login { max-width: 420px; margin: 72px auto; }
 .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0 20px; }
+.slot-groups { display: flex; flex-direction: column; gap: 12px; }
+.slot-group { margin: 0; padding: 14px 16px 2px; border: 1px solid var(--border); border-radius: 10px; }
+.slot-group legend { padding: 0 6px; font-size: 13px; font-weight: 600; color: var(--text-strong); }
 .admin-card textarea { height: 96px; font-family: var(--font-mono); font-size: 13px; }
 .days { display: flex; flex-wrap: wrap; gap: 8px; }
 .days label { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 8px; font-size: 14px; cursor: pointer; }

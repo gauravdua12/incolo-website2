@@ -3,7 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { zonedToUtc, dateKey, isoWeekday, label } = require('../lib/booking/time');
-const { computeSlots } = require('../lib/booking/slots');
+const { computeSlots, withinLimit } = require('../lib/booking/slots');
 const { validate, DEFAULTS } = require('../lib/booking/settings');
 const { buildIcs, fold, message, cancelMessage } = require('../lib/booking/invite');
 
@@ -24,42 +24,76 @@ test('DST timezone conversion stays on the wall clock', () => {
   assert.equal(iso(zonedToUtc('2026-10-30', '09:00', 'America/New_York')), '2026-10-30T13:00:00.000Z');
 });
 
-test('slots: Mon–Sat 10–18 IST, 30 min, 24h notice, Sunday excluded', () => {
+const at = (days, date) => (days.find((d) => d.date === date) || { slots: [] }).slots;
+const ist = (ms) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(ms);
+const only = (slots, id) => slots.filter((x) => x.groups.includes(id)).map((x) => ist(x.start));
+
+test('slots: 3 India/Middle East + 2 Europe calls a day, 45 min, merged when they coincide', () => {
   const now = Date.parse('2026-11-02T04:30:00Z'); // Mon 2 Nov, 10:00 IST
   const days = computeSlots(S, [], now);
   const dates = days.map((d) => d.date);
   assert.ok(!dates.includes('2026-11-02'), 'today is inside the 24h notice');
   assert.ok(!dates.includes('2026-11-08'), 'Sunday is closed');
-  const tue = days.find((d) => d.date === '2026-11-03');
-  assert.equal(tue.slots.length, 16); // 10:00…17:30, 8 hours of 30-min slots
-  assert.equal(iso(tue.slots[0].start), '2026-11-03T04:30:00.000Z'); // 10:00 IST
-  assert.equal(iso(tue.slots.at(-1).end), '2026-11-03T12:30:00.000Z'); // ends 18:00 IST
+  const tue = at(days, '2026-11-03');
+  assert.deepEqual(only(tue, 'in'), ['11:30', '14:30', '17:00']);
+  assert.deepEqual(only(tue, 'eu'), ['14:30', '19:00'], 'winter: 10:00 and 14:30 CET');
+  assert.equal(tue.length, 4, '10:00 CET is 14:30 IST, so one slot serves both regions');
+  assert.deepEqual(tue.find((x) => ist(x.start) === '14:30').groups, ['in', 'eu']);
+  assert.ok(tue.every((x) => x.end - x.start === 45 * 60000));
   assert.ok(dates.at(-1) <= '2026-11-16', 'window is 14 days');
+});
+
+test('slots: European times follow European summer time and stay inside 09:00–22:00 IST', () => {
+  const now = Date.parse('2027-07-12T04:30:00Z'); // Mon 12 Jul 2027
+  const tue = at(computeSlots(S, [], now), '2027-07-13');
+  assert.deepEqual(only(tue, 'eu'), ['13:30', '18:00'], 'summer: 10:00 and 14:30 CEST');
+  assert.deepEqual(only(tue, 'in'), ['11:30', '14:30', '17:00']);
+});
+
+test('slots: the 09:00–22:00 IST limit holds even for unvalidated settings', () => {
+  const now = Date.parse('2026-11-02T04:30:00Z');
+  const s = { ...S, slotGroups: [{ id: 'x', label: 'X', timezone: 'Asia/Kolkata', times: ['08:30', '09:00', '21:15', '21:30'] }] };
+  assert.deepEqual(only(at(computeSlots(s, [], now), '2026-11-04'), 'x'), ['09:00', '21:15']);
+  assert.equal(withinLimit(Date.parse('2026-11-03T15:45:00Z'), 45), true); // 21:15 IST, ends 22:00
+  assert.equal(withinLimit(Date.parse('2026-11-03T16:15:00Z'), 45), false); // 21:45 IST would end 22:30
 });
 
 test('slots: busy intervals and buffer remove overlapping times', () => {
   const now = Date.parse('2026-11-02T04:30:00Z');
-  const busy = [{ start: Date.parse('2026-11-03T05:30:00Z'), end: Date.parse('2026-11-03T06:30:00Z') }]; // 11:00–12:00 IST
-  const tue = (s, b) => computeSlots(s, b, now).find((d) => d.date === '2026-11-03').slots.map((x) => iso(x.start));
-  const plain = tue(S, busy);
-  assert.ok(!plain.includes('2026-11-03T05:30:00.000Z') && !plain.includes('2026-11-03T06:00:00.000Z'));
-  assert.ok(plain.includes('2026-11-03T05:00:00.000Z') && plain.includes('2026-11-03T06:30:00.000Z'));
-  const buffered = tue({ ...S, bufferMinutes: 15 }, busy);
-  assert.ok(!buffered.includes('2026-11-03T05:00:00.000Z') && !buffered.includes('2026-11-03T06:30:00.000Z'));
+  const busy = [{ start: Date.parse('2026-11-03T06:30:00Z'), end: Date.parse('2026-11-03T07:00:00Z') }]; // 12:00–12:30 IST
+  const tue = (s, b) => at(computeSlots(s, b, now), '2026-11-03').map((x) => ist(x.start));
+  assert.deepEqual(tue(S, busy), ['14:30', '17:00', '19:00'], 'overlaps 11:30–12:15');
+  const busy3 = [{ start: Date.parse('2026-11-03T06:50:00Z'), end: Date.parse('2026-11-03T07:00:00Z') }]; // 12:20–12:30 IST
+  assert.ok(tue(S, busy3).includes('11:30'));
+  assert.ok(!tue({ ...S, bufferMinutes: 10 }, busy3).includes('11:30'), 'buffer widens the busy time');
 });
 
-test('slots: blackout dates and custom hours', () => {
+test('slots: blackout dates and work days', () => {
   const now = Date.parse('2026-11-02T04:30:00Z');
-  const days = computeSlots({ ...S, blackoutDates: ['2026-11-03'], startTime: '14:00', endTime: '15:00', slotMinutes: 60 }, [], now);
+  const days = computeSlots({ ...S, blackoutDates: ['2026-11-03'], workDays: [3] }, [], now);
   assert.ok(!days.some((d) => d.date === '2026-11-03'));
-  assert.deepEqual(days[0].slots.map((s) => iso(s.start)), ['2026-11-04T08:30:00.000Z']);
+  assert.equal(days[0].date, '2026-11-04');
+  assert.ok(days.every((d) => isoWeekday(d.date) === 3));
+});
+
+test('settings: slot groups are checked against the IST limit, spacing and timezone', () => {
+  const g = (times, timezone = 'Asia/Kolkata', id = 'in') => ({ slotGroups: [{ id, label: 'G', timezone, times }] });
+  assert.equal(validate(g(['11:30', '14:30', '17:00'])).ok, true);
+  assert.match(validate(g(['21:30'])).errors.join(), /outside 09:00–22:00 IST/);
+  assert.match(validate(g(['08:45'])).errors.join(), /outside/);
+  assert.match(validate(g(['18:00'], 'Europe/Berlin', 'eu')).errors.join(), /outside/, '18:00 CET is 22:30 IST');
+  assert.match(validate(g(['11:30', '12:00'])).errors.join(), /45 minutes apart/);
+  assert.match(validate(g(['11:30'], 'Mars/Base')).errors.join(), /timezone/);
+  assert.match(validate({ slotGroups: [] }).errors.join(), /at least one group/);
+  assert.deepEqual(validate(g([' 17:00', '11:30', '11:30'])).settings.slotGroups[0].times, ['11:30', '17:00']);
+  assert.equal('startTime' in validate({ startTime: '10:00', endTime: '18:00' }).settings, false, 'old fields are dropped');
 });
 
 test('settings validation', () => {
   assert.equal(validate({}).ok, true);
-  const bad = validate({ invitees: ['ok@x.com', 'nope'], startTime: '18:00', endTime: '10:00', workDays: [], slotMinutes: 5, timezone: 'Mars/Base' });
+  const bad = validate({ invitees: ['ok@x.com', 'nope'], workDays: [], slotMinutes: 5, timezone: 'Mars/Base' });
   assert.equal(bad.ok, false);
-  assert.ok(bad.errors.length >= 5);
+  assert.ok(bad.errors.length >= 4);
   const norm = validate({ invitees: [' A@X.com ', 'a@x.com'], workDays: ['2', 2, 9], extra: 1 });
   assert.deepEqual(norm.settings.invitees, ['a@x.com']);
   assert.deepEqual(norm.settings.workDays, [2]);
@@ -151,4 +185,15 @@ test('store.update rewrites one record and keeps the rest', () => {
   assert.equal((fs.statSync(process.env.BOOKINGS_FILE).mode & 0o777).toString(8), '600');
   fs.rmSync(dir, { recursive: true });
   delete process.env.BOOKINGS_FILE;
+});
+
+test('invite: shows the customer\'s own clock time when it differs from IST', () => {
+  const base = { name: 'Lena', email: 'lena@acme.de', company: 'Acme', designation: 'COO', challenge: 'Scrap', startMs: Date.parse('2026-11-10T09:00:00Z'), endMs: Date.parse('2026-11-10T09:45:00Z') };
+  const run = (tz) => message({ booking: { ...base, tz }, settings: S, event: { iCalUID: 'u@google.com', meetLink: 'https://meet.google.com/abc-defg-hij' }, summary: 'Call', description: 'd' }).mail.text;
+  assert.match(run('Europe/Berlin'), /14:30 IST · 10:00 CET your time \(45 min\)/);
+  assert.match(run('Asia/Kolkata'), /14:30 IST \(45 min\)/);
+  assert.match(run(''), /14:30 IST \(45 min\)/);
+  assert.match(run('America/Los_Angeles'), /14:30 IST · 01:00 GMT-8 your time/);
+  const early = message({ booking: { ...base, tz: 'America/Los_Angeles', startMs: Date.parse('2026-11-10T06:00:00Z'), endMs: Date.parse('2026-11-10T06:45:00Z') }, settings: S, event: { iCalUID: 'u', meetLink: 'm' }, summary: 'Call', description: 'd' }).mail.text;
+  assert.match(early, /11:30 IST · Mon, 9 Nov 2026, 22:00 GMT-8 your time/, 'adds the date when it differs');
 });

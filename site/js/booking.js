@@ -15,17 +15,30 @@
     return data;
   }
 
+  const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fmt = (tz, opts) => new Intl.DateTimeFormat('en-GB', { timeZone: tz, ...opts });
   const keyToDate = (key) => { const [y, m, d] = key.split('-').map(Number); return new Date(Date.UTC(y, m - 1, d, 12)); };
   const monthKey = (key) => key.slice(0, 7);
   const sameOffset = (tz, iso) => fmt(tz, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(iso)) ===
     fmt(visitorTz, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(iso));
+  const tzPart = (tz, iso, style) => fmt(tz, { timeZoneName: style }).formatToParts(new Date(iso)).find((p) => p.type === 'timeZoneName')?.value || tz;
+  const tzAbbr = (tz, iso) => (/^Asia\/(Kolkata|Calcutta)$/.test(tz) ? 'IST' : tzPart(tz, iso, 'short'));
+
+  // Which slot group a visitor sees first: Europe (and anyone west of UTC+3) gets the European
+  // times, everyone else the India & Middle East times. Visitors can switch; the choice is shared.
+  let region = null;
+  const autoRegion = (groups) => {
+    const offset = -new Date().getTimezoneOffset();
+    const eu = groups.find((g) => g.id === 'eu');
+    if (eu && (visitorTz.startsWith('Europe/') || offset < 180)) return eu.id;
+    return (groups.find((g) => g.id === 'in') || groups[0]).id;
+  };
 
   function init(root) {
     if (root.dataset.ready) return;
     root.dataset.ready = '1';
     const grid = $('.bk-grid', root), monthEl = $('.bk-month', root), slotsEl = $('.bk-slots', root);
-    const timesTitle = $('.bk-times-title', root), tzEl = $('.bk-tz', root), note = $('.bk-note', root);
+    const timesTitle = $('.bk-times-title', root), tzEl = $('.bk-tz', root), note = $('.bk-note', root), regionEl = $('.bk-region', root);
     const form = $('.bk-form', root), status = $('.form-status', form), btn = $('button[type="submit"]', form), btnLabel = $('.btn-label', form);
     let data = null, month = null, selectedDate = null, selectedSlot = null;
 
@@ -36,8 +49,12 @@
       $$('[data-step-label]', root).forEach((li) => li.classList.toggle('done', order.indexOf(li.dataset.stepLabel) < order.indexOf(step)));
     };
 
-    const days = () => new Map(data.days.map((d) => [d.date, d.slots]));
-    const months = () => [...new Set(data.days.map((d) => monthKey(d.date)))];
+    const group = () => data.groups.find((g) => g.id === region) || data.groups[0];
+    const visible = () => data.days
+      .map((d) => ({ date: d.date, slots: d.slots.filter((x) => x.groups.includes(group().id)).map((x) => x.start) }))
+      .filter((d) => d.slots.length);
+    const days = () => new Map(visible().map((d) => [d.date, d.slots]));
+    const months = () => [...new Set(visible().map((d) => monthKey(d.date)))];
 
     function renderMonth() {
       const avail = days();
@@ -66,11 +83,40 @@
       if (!selectedDate) { slotsEl.innerHTML = ''; timesTitle.textContent = 'Select a date to see times'; return; }
       const list = days().get(selectedDate) || [];
       timesTitle.textContent = fmt('UTC', { weekday: 'long', day: 'numeric', month: 'long' }).format(keyToDate(selectedDate));
+      const tz = group().timezone;
       slotsEl.innerHTML = list.map((iso) => {
-        const main = fmt(data.timezone, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(iso));
-        const local = sameOffset(data.timezone, iso) ? '' : `<small>${fmt(visitorTz, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(iso))} your time</small>`;
+        const main = `${fmt(tz, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(iso))} ${tzAbbr(tz, iso)}`;
+        const local = sameOffset(tz, iso) ? '' : `<small>${fmt(visitorTz, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(iso))} your time</small>`;
         return `<button type="button" class="bk-slot" data-start="${iso}">${main}${local}</button>`;
       }).join('');
+    }
+
+    function renderRegions() {
+      regionEl.hidden = data.groups.length < 2;
+      regionEl.innerHTML = data.groups.length < 2 ? '' : '<span>Show times for</span>' + data.groups.map((g) =>
+        `<button type="button" class="bk-region-btn" data-region="${g.id}" aria-pressed="${g.id === group().id}">${esc(g.label)}</button>`).join('');
+    }
+
+    function render() {
+      renderRegions();
+      const list = visible(), g = group();
+      if (!list.length) {
+        note.hidden = false;
+        note.textContent = data.days.length
+          ? `No ${g.label} times are open right now. Try the other times above, or email business@incolosystems.com and we will find one.`
+          : 'No times are open right now. Please email business@incolosystems.com and we will find one.';
+        grid.innerHTML = ''; slotsEl.innerHTML = ''; tzEl.textContent = ''; selectedDate = null;
+        timesTitle.textContent = 'No times to show';
+        return;
+      }
+      note.hidden = true;
+      const first = list[0].slots[0];
+      const zone = tzPart(g.timezone, first, 'long');
+      tzEl.textContent = `Times in ${zone} (${tzAbbr(g.timezone, first)})${sameOffset(g.timezone, first) ? '' : ', with your local time below'}. Each call is ${data.slotMinutes} minutes.`;
+      if (!selectedDate || !days().has(selectedDate)) selectedDate = list[0].date;
+      month = monthKey(selectedDate);
+      renderMonth();
+      renderSlots();
     }
 
     async function refresh(force) {
@@ -84,14 +130,9 @@
           $$('[data-bk-organizer]').forEach((el) => { el.textContent = `${data.organizer.name} (${data.organizer.email})`; });
           $$('[data-bk-organizer-email]').forEach((el) => { el.textContent = data.organizer.email; });
         }
-        const tzName = data.timezone === 'Asia/Kolkata' ? 'IST (India)' : data.timezone;
-        tzEl.textContent = `Times in ${tzName}${data.days.length && !sameOffset(data.timezone, data.days[0].slots[0]) ? ', with your local time below' : ''}.`;
-        if (!data.days.length) { note.textContent = 'No times are open right now. Please email business@incolosystems.com and we will find one.'; grid.innerHTML = ''; return; }
-        note.hidden = true;
-        if (!selectedDate || !days().has(selectedDate)) selectedDate = data.days[0].date;
-        month = monthKey(selectedDate);
-        renderMonth();
-        renderSlots();
+        if (!data.groups?.length) data.groups = [{ id: 'all', label: '', timezone: data.timezone }];
+        if (!data.groups.some((g) => g.id === region)) region = autoRegion(data.groups);
+        render();
       } catch (e) {
         note.classList.add('is-err');
         note.innerHTML = 'Online booking is unavailable right now. Email <a href="mailto:business@incolosystems.com">business@incolosystems.com</a> or call <a href="tel:+919920323832">+91 99203 23832</a> and we\'ll set up the call.';
@@ -99,6 +140,8 @@
     }
 
     root.addEventListener('click', (e) => {
+      const reg = e.target.closest('.bk-region-btn');
+      if (reg) { region = reg.dataset.region; render(); return; }
       const nav = e.target.closest('.bk-nav');
       if (nav) {
         const ms = months();
@@ -112,10 +155,10 @@
       if (slot) {
         selectedSlot = slot.dataset.start;
         form.elements.start.value = selectedSlot;
-        const d = new Date(selectedSlot);
-        const tzLabel = data.timezone === 'Asia/Kolkata' ? 'IST' : data.timezone;
-        let text = `${fmt(data.timezone, { weekday: 'short', day: 'numeric', month: 'short' }).format(d)} · ${fmt(data.timezone, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(d)} ${tzLabel}`;
-        if (!sameOffset(data.timezone, selectedSlot)) text += ` (${fmt(visitorTz, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(d)} your time)`;
+        form.elements.tz.value = visitorTz;
+        const d = new Date(selectedSlot), tz = group().timezone;
+        let text = `${fmt(tz, { weekday: 'short', day: 'numeric', month: 'short' }).format(d)} · ${fmt(tz, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(d)} ${tzAbbr(tz, selectedSlot)}`;
+        if (!sameOffset(tz, selectedSlot)) text += ` (${fmt(visitorTz, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(d)} your time)`;
         $('.bk-chosen-label', root).textContent = text;
         status.textContent = ''; status.className = 'form-status';
         show('form');

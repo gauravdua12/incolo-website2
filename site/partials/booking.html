@@ -8,6 +8,7 @@
 
         <!-- Step 1: date + time -->
         <section class="bk-step bk-pick" data-step="pick" aria-label="Pick a date and time">
+          <div class="bk-region" role="group" aria-label="Show times for" hidden></div>
           <div class="bk-cal">
             <div class="bk-cal-head">
               <button type="button" class="bk-nav" data-month="-1" aria-label="Previous month"><svg class="ic-sm"><use href="/media/icons.svg#chevron-left"/></svg></button>
@@ -29,7 +30,7 @@
         <form class="bk-step bk-form" data-step="form" hidden novalidate>
           <div class="bk-chosen">
             <span class="icon-tile"><svg><use href="/media/icons.svg#calendar"/></svg></span>
-            <span><strong class="bk-chosen-label"></strong><small><span class="bk-duration">30</span>-minute Google Meet</small></span>
+            <span><strong class="bk-chosen-label"></strong><small><span class="bk-duration">45</span>-minute Google Meet</small></span>
             <button type="button" class="link-arrow bk-change">Change</button>
           </div>
           <div class="form-row">
@@ -56,6 +57,7 @@
             </div>
           </div>
           <input type="hidden" name="start" />
+          <input type="hidden" name="tz" />
           <!-- Honeypot: hidden from people, catches bots. Do not fill. -->
           <div class="hp" aria-hidden="true"><label for="{{fid}}-website">Leave this field empty</label><input id="{{fid}}-website" name="website" type="text" tabindex="-1" autocomplete="off" /></div>
           <div class="form-foot">
