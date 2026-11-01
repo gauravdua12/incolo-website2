@@ -97,12 +97,31 @@
 
         <section class="admin-card">
           <h2>Upcoming bookings</h2>
+          <p class="form-status" id="bookingsStatus" role="status" aria-live="polite"></p>
           <p class="muted" id="bookingsEmpty">No upcoming bookings.</p>
           <div class="bk-table-wrap"><table class="bk-table" id="bookings" hidden>
-            <thead><tr><th>When</th><th>Who</th><th>Challenge</th><th>Meet</th></tr></thead>
+            <thead><tr><th>When</th><th>Who</th><th>Challenge</th><th>Meet</th><th><span class="sr-only">Actions</span></th></tr></thead>
             <tbody></tbody>
           </table></div>
         </section>
       </div>
     </main>
+
+    <dialog class="admin-dialog" id="cancelDialog" aria-labelledby="cancelTitle">
+      <form id="cancelForm" method="dialog" novalidate>
+        <h2 id="cancelTitle">Cancel this meeting?</h2>
+        <p class="cancel-who" id="cancelWho"></p>
+        <div class="field">
+          <label for="cancelReason">Message to the customer (optional)</label>
+          <textarea id="cancelReason" name="reason" maxlength="1000" placeholder="e.g. Something urgent came up on our side. Sorry for the short notice."></textarea>
+        </div>
+        <label class="check"><input type="checkbox" id="cancelNotify" name="notify" checked />Email the cancellation to the customer and everyone invited (Bcc copies too)</label>
+        <p class="help">The Google Calendar event and its Meet link are deleted and the slot opens on the website again. This can't be undone.</p>
+        <div class="admin-actions">
+          <button class="btn btn-danger btn-md" type="submit" id="cancelConfirm">Cancel meeting</button>
+          <button class="btn btn-secondary btn-md" type="button" id="cancelKeep">Keep meeting</button>
+        </div>
+        <p class="form-status" id="cancelStatus" role="status" aria-live="polite"></p>
+      </form>
+    </dialog>
   </div>

@@ -223,7 +223,7 @@ app.get('/healthz', function (req, res) { res.type('text').send('ok'); });
 
 // ---------------------------------------------------------------- booking + admin
 app.use(bookingRouter({ transporter: transporter, rateLimit: makeLimiter(5, 60 * 60 * 1000) }));
-app.use(adminRouter({ smtpConfigured: Boolean(transporter), loginRateLimit: makeLimiter(5, 15 * 60 * 1000) }));
+app.use(adminRouter({ transporter: transporter, loginRateLimit: makeLimiter(5, 15 * 60 * 1000) }));
 app.use('/admin', function (req, res, next) { res.setHeader('X-Robots-Tag', 'noindex, nofollow'); next(); });
 
 // ---------------------------------------------------------------- static site

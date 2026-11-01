@@ -135,7 +135,8 @@ The log should include `booking calendar: google · admin: enabled`.
 | Change invitees, Bcc copies, sender name, hours, call length, notice, holidays | `/admin` → Scoping-call settings → Save (applies immediately) |
 | Block a time | Add anything to success@'s Google Calendar |
 | See upcoming bookings | `/admin`, or success@'s Google Calendar |
-| Cancel or reschedule | Edit or delete the event in success@'s Google Calendar and email the customer. Google sends no automatic update, because invites go out from your mailbox. |
+| Cancel a meeting | `/admin` → Upcoming bookings → **Cancel**. Add an optional message and click **Cancel meeting**. It deletes the Google event and Meet link, emails the cancellation from success@ to the customer and the same guests (Bcc copies too) so it disappears from their calendars, and opens the slot on the website again. Untick the email option to cancel silently. |
+| Reschedule | Cancel it in `/admin` (the email links the customer to pick a new time), or agree a new time by email and book it for them on the website. |
 | Change the admin password | `npm run admin-password` → replace the two lines in the server `.env` → restart |
 
 ## Troubleshooting
@@ -148,6 +149,7 @@ The log should include `booking calendar: google · admin: enabled`.
 | "Google token refresh failed: invalid_grant" | The app was left in Testing mode (7-day expiry) or access was removed. Publish it (step 3.4) and redo step 4. |
 | Booking works, but `/admin` shows "invite email not sent" | The SMTP login or password is wrong, or SMTP_USER isn't allowed to send as success@. The event and Meet link still exist; email the customer manually. |
 | Invites land in spam | Add SPF and DKIM DNS records for incolosystems.com at your mail provider. |
+| A meeting deleted directly in Google Calendar still blocks its slot and shows in `/admin` | Click **Cancel** on it in `/admin` too. It notices the event is already gone and frees the slot (untick the email option if Google already notified the guests). |
 | A slot shows that you know is busy | The event is in a different calendar, not success@'s Google Calendar. Add it there, or mark the day as a holiday in `/admin`. |
 
 Local development without Google: put `BOOKING_DRY_RUN=true` in `.env`. Slots and bookings work with fake Meet links, and invite emails are saved to `outbox/` instead of being sent.

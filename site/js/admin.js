@@ -59,7 +59,9 @@
     $('#files').textContent = `Settings: ${st.settingsFile} · Bookings: ${st.bookingsFile}`;
   }
 
+  let bookings = [];
   function renderBookings(list) {
+    bookings = list;
     const tbody = $('#bookings tbody');
     $('#bookings').hidden = !list.length;
     $('#bookingsEmpty').hidden = !!list.length;
@@ -70,8 +72,45 @@
       <td>${esc(b.name)}<small>${esc(b.designation)}, ${esc(b.company)}</small><small><a href="mailto:${esc(b.email)}">${esc(b.email)}</a>${b.phone ? ' · ' + esc(b.phone) : ''}</small></td>
       <td>${esc(b.challenge.length > 160 ? b.challenge.slice(0, 160) + '…' : b.challenge)}${b.program ? `<small>${esc(b.program)}</small>` : ''}</td>
       <td><a href="${esc(b.meetLink)}" target="_blank" rel="noopener">Join</a>${b.htmlLink ? `<small><a href="${esc(b.htmlLink)}" target="_blank" rel="noopener">Calendar</a></small>` : ''}</td>
+      <td>${Date.parse(b.end) > Date.now() ? `<button class="btn btn-secondary btn-sm" type="button" data-cancel="${esc(b.id)}">Cancel</button>` : ''}</td>
     </tr>`).join('');
   }
+
+  // Cancel a booking (dialog → POST /api/admin/bookings/:id/cancel)
+  const dlg = $('#cancelDialog');
+  let cancelId = null;
+  $('#bookings').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-cancel]');
+    if (!btn) return;
+    const b = bookings.find((x) => x.id === btn.dataset.cancel);
+    if (!b) return;
+    cancelId = b.id;
+    const tz = current?.timezone || 'Asia/Kolkata';
+    const when = new Intl.DateTimeFormat('en-GB', { timeZone: tz, weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(b.start));
+    $('#cancelWho').textContent = `${when} with ${b.name}, ${b.company} (${b.email})`;
+    $('#cancelReason').value = '';
+    $('#cancelNotify').checked = true;
+    $('#cancelStatus').textContent = '';
+    $('#cancelConfirm').disabled = false;
+    dlg.showModal();
+  });
+  $('#cancelKeep').addEventListener('click', () => dlg.close());
+  $('#cancelForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!cancelId) return;
+    $('#cancelConfirm').disabled = true;
+    setStatus($('#cancelStatus'), 'Cancelling…', true);
+    const r = await api('POST', `/api/admin/bookings/${encodeURIComponent(cancelId)}/cancel`, { reason: $('#cancelReason').value, notify: $('#cancelNotify').checked });
+    if (r.status === 401) { dlg.close(); return showLogin(); }
+    if (r.upcoming) renderBookings(r.upcoming);
+    if (r.ok) {
+      dlg.close();
+      setStatus($('#bookingsStatus'), r.message, r.mailed || !$('#cancelNotify').checked);
+    } else {
+      $('#cancelConfirm').disabled = false;
+      setStatus($('#cancelStatus'), r.message || 'Could not cancel.', false);
+    }
+  });
 
   async function loadDash() {
     const st = await api('GET', '/api/admin/state');

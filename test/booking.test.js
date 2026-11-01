@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const { zonedToUtc, dateKey, isoWeekday, label } = require('../lib/booking/time');
 const { computeSlots } = require('../lib/booking/slots');
 const { validate, DEFAULTS } = require('../lib/booking/settings');
-const { buildIcs, fold, message } = require('../lib/booking/invite');
+const { buildIcs, fold, message, cancelMessage } = require('../lib/booking/invite');
 
 const S = { ...DEFAULTS };
 const iso = (ms) => new Date(ms).toISOString();
@@ -98,4 +98,57 @@ test('ics: structure, escaping, CRLF and folding', () => {
   for (const line of ics.split('\r\n')) assert.ok(Buffer.byteLength(line) <= 75, `line too long: ${line}`);
   assert.equal(fold('é'.repeat(60)).split('\r\n').every((l) => Buffer.byteLength(l) <= 75), true);
   assert.ok(!/[^\r]\n/.test(ics), 'bare LF found');
+});
+
+test('ics: cancellation keeps the UID, marks it cancelled, drops the reminder', () => {
+  const ics = buildIcs({
+    uid: 'abc@google.com', start: Date.parse('2026-11-03T05:30:00Z'), end: Date.parse('2026-11-03T06:00:00Z'),
+    summary: 'Call', description: 'Sorry', meetLink: 'https://meet.google.com/x', sequence: 1, method: 'CANCEL',
+    organizer: { name: 'Gaurav Dua', email: 'success@incolosystems.com' }, attendees: [{ name: 'Asha', email: 'asha@acme.com' }],
+  });
+  for (const l of ['METHOD:CANCEL', 'STATUS:CANCELLED', 'UID:abc@google.com', 'SEQUENCE:1']) assert.ok(ics.includes(`\r\n${l}\r\n`), l);
+  assert.ok(!ics.includes('VALARM'));
+});
+
+test('cancel email: same guests, Bcc hidden, from the original organizer', () => {
+  const record = {
+    id: 'ev1', iCalUID: 'ev1@google.com', start: '2026-11-03T05:30:00.000Z', end: '2026-11-03T06:00:00.000Z',
+    name: 'Asha', email: 'asha@acme.com', company: 'Acme', meetLink: 'https://meet.google.com/abc', summary: 'Incolo Systems scoping call · Acme',
+    organizer: { name: 'Gaurav Dua', email: 'success@incolosystems.com' },
+    invitees: ['asha@acme.com', 'success@incolosystems.com'], bcc: ['theedivesh@gmail.com'],
+  };
+  const { mail, ics } = cancelMessage({ record, settings: { ...S, organizerName: 'Someone Else', organizerEmail: 'other@x.com' }, reason: 'Urgent <visit>' });
+  assert.deepEqual(mail.from, { name: 'Gaurav Dua', address: 'success@incolosystems.com' });
+  assert.deepEqual(mail.to, [{ name: 'Asha', address: 'asha@acme.com' }, { name: 'Gaurav Dua', address: 'success@incolosystems.com' }]);
+  assert.deepEqual(mail.bcc, ['theedivesh@gmail.com']);
+  assert.equal(mail.icalEvent.method, 'CANCEL');
+  assert.match(mail.subject, /^Cancelled: Incolo Systems scoping call · Acme · Tue/);
+  assert.ok(mail.html.includes('Urgent &lt;visit&gt;') && !mail.html.includes('<visit>'), 'reason is HTML-escaped');
+  assert.ok(mail.text.includes('Urgent <visit>'));
+  assert.ok(ics.includes('UID:ev1@google.com') && !ics.includes('theedivesh'));
+  // Older records without summary/organizer fall back to the current settings
+  const old = cancelMessage({ record: { ...record, summary: undefined, organizer: undefined, bcc: undefined }, settings: S, reason: '' });
+  assert.equal(old.mail.from.address, S.organizerEmail);
+  assert.match(old.mail.subject, /Incolo Systems scoping call · Acme/);
+  assert.equal(old.mail.bcc, undefined);
+});
+
+test('store.update rewrites one record and keeps the rest', () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bk-'));
+  process.env.BOOKINGS_FILE = path.join(dir, 'b.jsonl');
+  const store = require('../lib/booking/store');
+  const future = (h) => new Date(Date.now() + h * 3600000).toISOString();
+  store.append({ id: 'a', status: 'confirmed', start: future(1), end: future(2) });
+  fs.appendFileSync(process.env.BOOKINGS_FILE, 'not json\n');
+  store.append({ id: 'b', status: 'confirmed', start: future(3), end: future(4) });
+  assert.equal(store.update('missing', { status: 'cancelled' }), null);
+  assert.equal(store.update('a', { status: 'cancelled' }).status, 'cancelled');
+  assert.deepEqual(store.upcoming().map((b) => b.id), ['b']);
+  assert.ok(fs.readFileSync(process.env.BOOKINGS_FILE, 'utf8').includes('not json\n'), 'unreadable lines are preserved');
+  assert.equal((fs.statSync(process.env.BOOKINGS_FILE).mode & 0o777).toString(8), '600');
+  fs.rmSync(dir, { recursive: true });
+  delete process.env.BOOKINGS_FILE;
 });
